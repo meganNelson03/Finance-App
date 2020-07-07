@@ -48,6 +48,7 @@ app.get("/", (req, res) => {
     year: date.getFullYear()
   }
 
+
   const myDateString = date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + "-" + ('0' + date.getDate()).slice(-2);
 
   Money.find({}, (err, moneys) => {
@@ -58,7 +59,7 @@ app.get("/", (req, res) => {
     Promise.all(moneys.map(money => {
 
       return new Promise((resolve, reject) => {
-        if (money.amount > 0) {
+        if (money.type == "income") {
           income += money.amount;
           resolve(income);
         } else {
@@ -68,6 +69,8 @@ app.get("/", (req, res) => {
 
       })
     })).then(() => {
+
+      console.log(moneys);
       res.render("finances", {amounts: moneys, date: myDateString, income: income, expense: expense});
     })
 
@@ -77,8 +80,33 @@ app.get("/", (req, res) => {
 
 app.get("/amounts", (req, res) => {
 
+  const query = {}
 
-  Money.find({"date.month" : req.query.selectMonth}, (err, moneyList) => {
+  Object.getOwnPropertyNames(req.query).forEach(name => {
+    console.log(req.query[name]);
+    console.log(req.query)
+
+    if (req.query[name] != "none") {
+
+      console.log("YEEEEE");
+
+    switch (name) {
+      case "type": query["type"] = req.query[name];
+        break;
+      case "day": query["date.day"] = req.query[name];
+        break;
+      case "month": query["date.month"] = req.query[name];
+        break;
+      case "year": query["date.year"] = req.query[name];
+        break;
+      default: console.log("Error: validating details failed.");
+      }
+    }
+  });
+
+  console.log(query);
+
+  Money.find(query, (err, moneyList) => {
     if (err) {
       console.log(err);
     }
@@ -103,13 +131,13 @@ app.post("/", (req, res) => {
 
 
     const details = {
-      type: req.body.newType,
-      amount: req.body.newAmount,
+      type: req.body.type,
+      amount: Math.abs(req.body.newAmount),
       date: dateInfo,
       description: req.body.newDescription
     }
 
-    if (details.amount < -99999 || details.amount > 99999) {
+    if (details.amount > 99999) {
       console.log("Error: amount is invalid.");
     } else {
       Money.create(details, (err, newMoney) => {
@@ -117,6 +145,7 @@ app.post("/", (req, res) => {
           console.log(err);
           res.redirect("/");
         }
+
       });
     }
 
