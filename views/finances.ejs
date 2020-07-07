@@ -1,0 +1,93 @@
+<%- include("partials/header.ejs") -%>
+
+
+<div class="container-fluid">
+
+  <div class="header-section">
+    <h1 class="header-text">Finances</h1>
+
+    <form class="amount-add" action="/" method="post">
+      <input type="date" value="<%= date %>" name="newDate">
+      <input type="number" step="0.01" name="newAmount" placeholder="Amount">
+      <input type="text" name="newDescription" placeholder="Description">
+      <select name="cars" id="newType">
+        <option value="food">Food</option>
+        <option value="rent">Rent</option>
+        <option value="utilties">Utilities</option>
+        <option value="audi">Misc.</option>
+      </select>
+
+      <button class="submit-amount" type="submit" name="button">+</button>
+    </form>
+  </div>
+
+  <div class="money-section">
+    <div class="row">
+      <div class="income-section col-lg-6">
+        <h3>Income</h3>
+        <% amounts.forEach(function(amount){ %>
+        <%  if (amount.amount >= 0) { %>
+
+            <div class="income">
+
+              <div class="amount-date">
+                <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
+              </div>
+              <div class="amount-amount">
+                <%= amount.amount %>
+              </div>
+              <div class="amount-description">
+                <%= amount.description %>
+              </div>
+              <div class="amount-type">
+                <%= amount.type %>
+              </div>
+              <form class="" action="/<%= amount._id %>?_method=DELETE" method="post">
+                <button class="delete-item" type="submit" name="button">-</button>
+              </form>
+
+            </div>
+
+        <%  } %>
+        <% }) %>
+      </div>
+      <div class="expense-section col-lg-6">
+          <h3>Expense</h3>
+          <% amounts.forEach(function(amount){ %>
+          <% if (amount.amount < 0) { %>
+
+            <% console.log("****") %>
+            <% console.log(amount.amount)%>
+
+              <div class="expense">
+
+                <div class="amount-date">
+                  <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
+                </div>
+                <div class="amount-amount">
+                  <%= amount.amount %>
+                </div>
+                <div class="amount-description">
+                  <%= amount.description %>
+                </div>
+                <div class="amount-type">
+                  <%= amount.type %>
+                </div>
+                <form class="" action="/<%= amount._id %>?_method=DELETE" method="post">
+                  <button class="delete-item" type="submit" name="button">-</button>
+                </form>
+
+              </div>
+
+            <% } %>
+          <% }); %>
+    </div>
+
+  </div>
+  </div>
+
+
+
+</div>
+
+<%- include("partials/footer.ejs") -%>
