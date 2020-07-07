@@ -21,7 +21,8 @@ form {
 form input, select {
   margin: 0;
   padding: .5%;
-  height: 50px;
+  height: 100%;
+  width: 100%;
   font-size: 1rem;
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
@@ -35,21 +36,17 @@ form input:focus, select:focus {
 }
 
 form input[type="date"] {
-  width: 160px;
 
 }
 
 form input[name="newAmount"] {
-  width: 100px;
 
 }
 
 form input[name="newDescription"] {
-  width: 300px;
 }
 
 form input[type="type"] {
-  width: 100px;
 }
 
 .add-amount {
@@ -63,8 +60,8 @@ form input[type="type"] {
 }
 
 .submit-amount {
-  width: 50px;
-  height: 50px;
+  width: 100%;
+  height: 100%;
   outline: none;
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
@@ -76,12 +73,81 @@ form input[type="type"] {
   display: inline-block;
 }
 
+.income-section {
+  padding-right: 2%;
+}
+
+.income-section form, .expense-section form {
+  margin: 0;
+  width: 100%;
+}
+
 .delete-item {
   outline: none;
-  border: 2px solid lightgray;
+  border: none;
+  width: 100%;
+  padding: 5px;
+  display: none;
+}
+
+.money-section {
+  padding-top: 5%;
+}
+
+
+div[class^="col-lg"], div[class^="col-"] {
+  /* border-top: 2px solid lightgray;
+  border-bottom: 2px solid lightgray; */
+  width: 100%;
+  padding: 0%;
 }
 
 div[class^="amount-"] {
   display: inline-block;
   background-color: white;
+  height: 100%;
+  width: 100%;
+  padding: 5px;
+
+}
+
+.amount-date {
+  text-align: center;
+}
+
+.amount-amount {
+}
+
+.amount-description {
+
+}
+
+.amount-type {
+
+}
+
+.income:hover .delete-item, .expense:hover .delete-item {
+  display: inline-block;
+  animation: slide-out-animation 1s forwards;
+}
+
+/* animation */
+
+.button-slide-out {
+  display: inline-block;
+  animation: slide-out-animation 1s forwards;
+}
+
+@keyframes slide-out-animation {
+
+  from {
+
+    transform: translateX(calc(-50%));
+  }
+
+  to {
+    transform: translateX(calc(-100%));
+  }
+
+
 }

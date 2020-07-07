@@ -1,0 +1,15 @@
+<%- include("./partials/header.ejs") -%>
+
+<% moneyList.forEach(item => { %>
+
+  <p><%= item.date %></p>
+
+  <p><%= item.amount %></p>
+
+  <p><%= item.type %> </p>
+
+
+
+<% }) %>
+
+<%- include("./partials/footer.ejs") -%>
