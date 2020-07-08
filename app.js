@@ -4,8 +4,10 @@ var mongoose = require("mongoose");
 var methodOverride = require("method-override");
 const mongo = require("mongodb").MongoClient;
 
+var compute = require(__dirname + "/data.js");
 
 const url = 'mongodb://localhost:27017/finances_site'
+var currentQuery = {};
 const portNum = 3005;
 
 var app = express();
@@ -40,38 +42,16 @@ app.set("view engine", "ejs");
 
 app.get("/", (req, res) => {
 
-  let income = 0, expense = 0;
-  const date = new Date();
-  const dateInfo = {
-    day: ('0' + date.getDate()).slice(-2),
-    month: date.getMonth(),
-    year: date.getFullYear()
-  }
-
-
-  const myDateString = date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + "-" + ('0' + date.getDate()).slice(-2);
+  currentQuery = {};
+  const date = compute.formattedDate();
 
   Money.find({}, (err, moneys) => {
     if (err) {
       console.log(err);
     }
 
-    Promise.all(moneys.map(money => {
-
-      return new Promise((resolve, reject) => {
-        if (money.type == "income") {
-          income += money.amount;
-          resolve(income);
-        } else {
-          expense += money.amount;
-          resolve(expense);
-        }
-
-      })
-    })).then(() => {
-
-      console.log(moneys);
-      res.render("finances", {amounts: moneys, date: myDateString, income: income, expense: expense});
+    compute.addAmount(moneys, 0, 0, (income, expense) => {
+      res.render("finances", {amounts: moneys, date: date, income: income, expense: expense, type: "none"});
     })
 
   })
@@ -80,42 +60,42 @@ app.get("/", (req, res) => {
 
 app.get("/amounts", (req, res) => {
 
-  const query = {}
+  let amounts = {};
+  let date = compute.formattedDate();
 
-  Object.getOwnPropertyNames(req.query).forEach(name => {
-    console.log(req.query[name]);
-    console.log(req.query)
+  currentQuery = compute.createQueryObj(req.query, "none", ["type", "date.day", "date.month", "date.year"]);
 
-    if (req.query[name] != "none") {
-
-      console.log("YEEEEE");
-
-    switch (name) {
-      case "type": query["type"] = req.query[name];
-        break;
-      case "day": query["date.day"] = req.query[name];
-        break;
-      case "month": query["date.month"] = req.query[name];
-        break;
-      case "year": query["date.year"] = req.query[name];
-        break;
-      default: console.log("Error: validating details failed.");
-      }
-    }
-  });
-
-  console.log(query);
-
-  Money.find(query, (err, moneyList) => {
+  Money.find(currentQuery, (err, moneys) => {
     if (err) {
       console.log(err);
     }
 
-    console.log(moneyList);
+    compute.addAmount(moneys, 0, 0, (income, expense) => {
 
-    res.render("moneylist", {moneyList: moneyList});
+      res.render("finances", {amounts: moneys, date: date, income: income, expense: expense, type: currentQuery.type});
+    });
+
   })
 
+
+})
+
+app.get("/amounts/queries", (req, res) => {
+
+  let amounts = {};
+  let date = compute.formattedDate();
+
+  Money.find(currentQuery, (err, moneys) => {
+    if (err) {
+      console.log(err);
+    }
+
+    compute.addAmount(moneys, 0, 0, (income, expense) => {
+
+      res.render("finances", {amounts: moneys, date: date, income: income, expense: expense, type: currentQuery.type});
+    });
+
+  })
 
 })
 
@@ -123,12 +103,13 @@ app.get("/amounts", (req, res) => {
 
 app.post("/", (req, res) => {
 
+  console.log(req);
+
     const dateInfo = {
       day: req.body.newDate.substr(8, 2),
       month: req.body.newDate.substr(5, 2),
       year: req.body.newDate.substr(0, 4)
     }
-
 
     const details = {
       type: req.body.type,
@@ -149,7 +130,11 @@ app.post("/", (req, res) => {
       });
     }
 
-  res.redirect("/");
+  if (currentQuery == {}) {
+    res.redirect("/")
+  } else {
+    res.redirect("/amounts/queries");
+  }
 
 });
 
@@ -159,7 +144,16 @@ app.delete("/:itemID", (req, res) => {
       console.log(err);
     }
 
-    res.redirect("/");
+
+
+    if (currentQuery == {}) {
+
+      res.redirect("/");
+    } else {
+      res.redirect("/amounts/queries");
+    }
+
+
 
   });
 })

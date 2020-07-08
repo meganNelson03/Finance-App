@@ -1,0 +1,70 @@
+<div class="money-section">
+  <div class="row">
+    <div class="income-section col-lg-6">
+      <h3>Income <span class="income-title"><%= income %></span></h3>
+      <% amounts.forEach(function(amount){ %>
+      <%  if (amount.type == "income") { %>
+
+          <div class="income row">
+
+            <div class="col-lg-2 col-md-2 col-3">
+              <div class="amount-date">
+                <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-9">
+              <div class="amount-amount">
+                <%= amount.amount %>
+              </div>
+            </div>
+            <div class="col-lg-7 col-md-7 col-12">
+              <div class="amount-description">
+                <%= amount.description.substr(0, 40); %>
+              </div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-12">
+              <form class="" action="/<%= amount._id %>?_method=DELETE" method="post">
+                <button id="del" class="delete-item" type="submit" name="button">-</button>
+              </form>
+            </div>
+
+          </div>
+
+      <%  } %>
+      <% }) %>
+    </div>
+    <div class="expense-section col-lg-6">
+        <h3>Expense <span class="expense-total"><%= expense %></span></h3>
+        <% amounts.forEach(function(amount){ %>
+        <% if (amount.type == "expense") { %>
+
+              <div class="expense row">
+                <div class="col-lg-2 col-md-2 col-3">
+                  <div class="amount-date">
+                    <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
+                  </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-9">
+                  <div class="amount-amount">
+                    <%= amount.amount %>
+                  </div>
+                </div>
+                <div class="col-lg-7 col-md-7 col-12">
+                  <div class="amount-description">
+                    <%= amount.description.substr(0, 40); %>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-md-1 col-12">
+                  <form class="" action="/<%= amount._id %>?_method=DELETE" method="post">
+                    <button class="delete-item" type="submit" name="button">-</button>
+                  </form>
+                </div>
+              </div>
+
+
+          <% } %>
+        <% }); %>
+  </div>
+
+</div>
+</div>
