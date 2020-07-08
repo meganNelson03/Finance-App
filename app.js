@@ -13,13 +13,10 @@ const portNum = 3005;
 var app = express();
 app.use(express.static(__dirname + "/public"));
 app.use(bodyparser.urlencoded({extended: true}));
+app.use(express.static(__dirname + "/public"));
+app.use(bodyparser.urlencoded({extended: true}));
+app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
-
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
-  }
-}
 
 mongoose.connect(url, {
     useNewUrlParser: true,
@@ -27,18 +24,13 @@ mongoose.connect(url, {
   }, (err, client) => {
   if (err) {
     console.error(err);
-
     return;
   }
-
-
 });
 
 var Money = require("./models/money.js");
 
-app.use(express.static(__dirname + "/public"));
-app.use(bodyparser.urlencoded({extended: true}));
-app.set("view engine", "ejs");
+
 
 app.get("/", (req, res) => {
 
@@ -63,16 +55,22 @@ app.get("/amounts", (req, res) => {
   let amounts = {};
   let date = compute.formattedDate();
 
-  currentQuery = compute.createQueryObj(req.query, "none", ["type", "date.day", "date.month", "date.year"]);
+  currentQuery = compute.createQueryObj(req.query, ["type", "date.day", "date.month", "date.year"]);
+
+  console.log(currentQuery);
+  console.log(req.query);
 
   Money.find(currentQuery, (err, moneys) => {
     if (err) {
       console.log(err);
     }
 
+    let minDate = compute.getDateString(req.query.minDate);
+    let maxDate = compute.getDateString(req.query.maxDate);
+
     compute.addAmount(moneys, 0, 0, (income, expense) => {
 
-      res.render("finances", {amounts: moneys, date: date, income: income, expense: expense, type: currentQuery.type});
+      res.render("finances", {amounts: moneys, minDate: minDate, maxDate: maxDate, date: date, income: income, expense: expense, type: currentQuery.type});
     });
 
   })
@@ -91,7 +89,6 @@ app.get("/amounts/queries", (req, res) => {
     }
 
     compute.addAmount(moneys, 0, 0, (income, expense) => {
-
       res.render("finances", {amounts: moneys, date: date, income: income, expense: expense, type: currentQuery.type});
     });
 
@@ -100,28 +97,14 @@ app.get("/amounts/queries", (req, res) => {
 })
 
 
-
 app.post("/", (req, res) => {
 
-  console.log(req);
+    const newAmount = compute.getAmountDetails(req.body, req.body.newDate, req.body.newType, req.body.newAmount, req.body.newDescription);
 
-    const dateInfo = {
-      day: req.body.newDate.substr(8, 2),
-      month: req.body.newDate.substr(5, 2),
-      year: req.body.newDate.substr(0, 4)
-    }
-
-    const details = {
-      type: req.body.type,
-      amount: Math.abs(req.body.newAmount),
-      date: dateInfo,
-      description: req.body.newDescription
-    }
-
-    if (details.amount > 99999) {
+    if (newAmount.amount > 99999) {
       console.log("Error: amount is invalid.");
     } else {
-      Money.create(details, (err, newMoney) => {
+      Money.create(newAmount, (err, newMoney) => {
         if (err) {
           console.log(err);
           res.redirect("/");
@@ -130,11 +113,11 @@ app.post("/", (req, res) => {
       });
     }
 
-  if (currentQuery == {}) {
-    res.redirect("/")
-  } else {
-    res.redirect("/amounts/queries");
-  }
+    if (JSON.stringify(currentQuery) == "{}") {
+      res.redirect("/")
+    } else {
+      res.redirect("/amounts/queries");
+    }
 
 });
 
@@ -144,16 +127,11 @@ app.delete("/:itemID", (req, res) => {
       console.log(err);
     }
 
-
-
     if (currentQuery == {}) {
-
       res.redirect("/");
     } else {
       res.redirect("/amounts/queries");
     }
-
-
 
   });
 })
