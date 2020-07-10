@@ -1,4 +1,46 @@
 <div class="money-section">
+
+
+<% if (!all) { %>
+
+  <h3>Current Search: </h3>
+
+  <div class="current-query-container">
+
+    <div class="current-query-form">
+        <button type="button" class="remove-query-button btn btn-md btn-dark" name="removeItem" value="type">
+          Type: All
+        </button>
+    </div>
+
+    <div class="current-query-form">
+      <form class="" action="/amounts/queries/adjust" method="post">
+        <% if (!minAdjusted) { %>
+          <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="minDate">
+                From:  <%= minDate.month %>/<%= minDate.day %>/<%= minDate.year %>
+            <span>&times</span>
+          </button>
+        <% } %>
+      </form>
+    </div>
+
+    <div class="current-query-form">
+      <form class="" action="/amounts/queries/adjust" method="post">
+        <% if (!maxAdjusted) { %>
+          <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="maxDate">
+                To:  <%= maxDate.month %>/<%= maxDate.day %>/<%= maxDate.year %>
+            <span>&times</span>
+          </button>
+        <% } %>
+      </form>
+    </div>
+  </div>
+
+<hr class="index-hr">
+
+<% } %>
+
+
   <div class="row">
     <div class="income-section col-lg-6">
       <h3>Income <span class="income-title"><%= income %></span></h3>
@@ -6,7 +48,6 @@
       <%  if (amount.type == "income") { %>
 
           <div class="income row">
-
             <div class="col-lg-2 col-md-2 col-3">
               <div class="amount-date">
                 <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
@@ -68,3 +109,5 @@
 
 </div>
 </div>
+
+<script src="./scripts/finances.js" charset="utf-8"></script>

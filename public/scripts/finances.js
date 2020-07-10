@@ -11,3 +11,8 @@ $(".display-form").on("click", () => {
     $(".display-form").html("<i class='fas fa-plus'></i>");
   }
 })
+
+
+$(".remove-query-item").toggle("click", () => {
+  $(".remove-query-item").css("display", "none");
+})

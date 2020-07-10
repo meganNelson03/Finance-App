@@ -1,11 +1,80 @@
-<h3>Search: </h3>
+<h3>Current Search: </h3>
 
-  <div class="">
-    <p>Type: Income</p>
-  </div>
-  <div class="">
-    <p>From: <%= minDate.month %>/<%= minDate.day %>/<%= minDate.year %></p>
-  </div>
-  <div class="">
-    <p>To: <%= maxDate.month %>/<%= maxDate.day %>/<%= maxDate.year %></p>
-  </div>
+<div class="current-query-container">
+    <div class="current-query-form">
+      <form class="" action="/amounts/queries/adjust" method="post">
+        <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="type">
+          Type: Income
+          <span>x</span>
+        </button>
+      </form>
+    </div>
+
+    <div class="current-query-form">
+      <form class="" action="/amounts/queries/adjust" method="post">
+        <% if (!minAdjusted) { %>
+          <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="minDate">
+                From:  <%= minDate.month %>/<%= minDate.day %>/<%= minDate.year %>
+            <span>&times</span>
+          </button>
+        <% } %>
+      </form>
+    </div>
+
+    <div class="current-query-form">
+      <form class="" action="/amounts/queries/adjust" method="post">
+        <% if (!maxAdjusted) { %>
+          <button class="remove-query-button btn btn-md btn-dark" name="removeItem" type="submit" value="maxDate">
+            To: <%= maxDate.month %>/<%= maxDate.day %>/<%= maxDate.year %>
+            <span>&times</span>
+          </button>
+        <% } %>
+      </form>
+    </div>
+
+</div>
+
+<hr class="index-hr">
+
+  <section>
+    <div class="row">
+      <div class="col-12">
+        <h3>Income <span class="income-title"><%= income %></span> </h3>
+      </div>
+    </div>
+
+    <div class="income-section col-lg-12">
+      <% amounts.forEach(function(amount){ %>
+
+          <div class="income row">
+            <div class="col-lg-2 col-md-2 col-3">
+              <div class="amount-date">
+                <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
+              </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-9">
+              <div class="amount-amount">
+                <%= amount.amount %>
+              </div>
+            </div>
+            <div class="col-lg-7 col-md-7 col-12">
+              <div class="amount-description">
+                <%= amount.description.substr(0, 40); %>
+              </div>
+            </div>
+            <div class="col-lg-1 col-md-1 col-12">
+              <form class="" action="/<%= amount._id %>?_method=DELETE" method="post">
+                <button id="del" class="delete-item" type="submit" name="button">-</button>
+              </form>
+            </div>
+
+          </div>
+
+      <% }) %>
+    </div>
+  </section>
+
+
+
+<!-- my script -->
+<script src="./scripts/finances.js" charset="utf-8"></script>

@@ -1,10 +1,3 @@
-var Money = require("./models/money.js");
-
-module.exports.findMinimumDate = function() {
-  Money.find()
-}
-
-
 module.exports.formattedDate = function() {
   var date = new Date();
   return date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + "-" + ('0' + date.getDate()).slice(-2);
@@ -20,17 +13,6 @@ module.exports.getDateString = function getDateString(query) {
   return dateInfo;
 }
 
-function getDateString(query) {
-  const dateInfo = {
-    day: query.substr(8, 2),
-    month: query.substr(5, 2),
-    year: query.substr(0, 4)
-  }
-
-  return dateInfo;
-}
-
-
 module.exports.getAmountDetails = function(query, queryDate, queryType, queryAmount, queryDescription) {
 
   const dateInfo = getDateString(queryDate);
@@ -45,8 +27,6 @@ module.exports.getAmountDetails = function(query, queryDate, queryType, queryAmo
   return details;
 
 }
-
-
 
 module.exports.addAmount = function(amounts, income, expense, callBack) {
 
@@ -71,10 +51,8 @@ module.exports.createQueryObj = function(query, caseList) {
   var newQuery = {};
   var minDay, maxDay, minMonth, maxMonth, minYear, maxYear;
 
-  // remove all "none" values from query
   query = removeQueryValue(query, "none");
 
-  // give date.* MIN and MAX values {"date.day": {$gte: num, $lte: num}}...
   Object.getOwnPropertyNames(query).forEach((key) => {
     if (key.toLowerCase().includes("date")) {
       if (key == "minDate") {
@@ -99,17 +77,84 @@ module.exports.createQueryObj = function(query, caseList) {
 
 }
 
+module.exports.adjustCurrentQuery = function(query, minDate, maxDate, adjustingQuery, caseList) {
+
+  var newQuery = {};
+
+  Object.getOwnPropertyNames(query).forEach(key => {
+    if (key != caseList[0]) {
+      newQuery[key] = query[key];
+    } else if (key == caseList[0]) {
+      if (adjustingQuery[caseList[0]] == false) {
+        newQuery[key] = query[key];
+      }
+    }
+  })
+
+  if (adjustingQuery.minDate && !(adjustingQuery.adjustedDate)) {
+    newQuery[caseList[1]] = {$lte: maxDate.day};
+    newQuery[caseList[2]] = {$lte: maxDate.month};
+    newQuery[caseList[3]] = {$lte: maxDate.year};
+    adjustingQuery.adjustedDate = true;
+  } else if (adjustingQuery.maxDate && !(adjustingQuery.adjustedDate)) {
+    newQuery[caseList[1]] = {$gte: minDate.day};
+    newQuery[caseList[2]] = {$gte: minDate.month};
+    newQuery[caseList[3]] = {$gte: minDate.year};
+    adjustingQuery.adjustedDate = true;
+  } else if (adjustingQuery.adjustedDate) {
+    if (minDate.removed) {
+      newQuery[caseList[1]] = {$gte: 0};
+      newQuery[caseList[2]] = {$gte: 0};
+      newQuery[caseList[3]] = {$gte: 0};
+    } else if (maxDate.removed) {
+      newQuery[caseList[1]] = {$gte: minDate.day};
+      newQuery[caseList[2]] = {$gte: minDate.month};
+      newQuery[caseList[3]] = {$gte: minDate.year};
+    }
+
+  }
+
+  if (adjustingQuery.minDate) {
+    minDate.removed = true;
+
+  } else if (adjustingQuery.maxDate) {
+    maxDate.removed = true;
+  }
+
+  console.log(newQuery);
+  return newQuery;
+}
+
+module.exports.setQuery = function(query, value) {
+
+  Object.getOwnPropertyNames(query).forEach(key => {
+    query[key] = value;
+  });
+
+  return query;
+}
+
+
+
 function removeQueryValue(query, value) {
 
   let newQuery = {};
 
   Object.getOwnPropertyNames(query).forEach(key => {
-
     if (query[key] != "none") {
       newQuery[key] = query[key];
     }
-
   });
 
   return newQuery;
+}
+
+function getDateString(query) {
+  const dateInfo = {
+    day: query.substr(8, 2),
+    month: query.substr(5, 2),
+    year: query.substr(0, 4)
+  }
+
+  return dateInfo;
 }

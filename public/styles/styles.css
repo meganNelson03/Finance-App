@@ -31,6 +31,17 @@ body {
 
 /**** INCOME & EXPENSE SECTION *****/
 
+.current-query-form {
+  display: inline-block;
+  background-color: white;
+}
+
+.remove-query-button {
+  border: none;
+  border-radius: 5px;
+  outline: none;
+}
+
 /***** INCOME LIST SECTION ******/
 
 /***** EXPENSE LIST SECTION ******/
