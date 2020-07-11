@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-10">
+    <h3>Current Search: </h3>
+  </div>
+  <div class="index-button-container col-2">
+      <button type="button" class="display-form" name="button"><i class="fas fa-plus"></i></button>
+  </div>
+</div>
+
+
+
+<div class="current-query-container">
+    <div class="current-query-form">
+      <form class="" action="/amounts/queries/adjust" method="post">
+        <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="type">
+          <span>Type:</span> <%= type %>
+          <span class="remove-query-icon">&times</span>
+        </button>
+      </form>
+    </div>
+
+    <div class="current-query-form">
+      <form class="" action="/amounts/queries/adjust" method="post">
+        <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="type">
+          <span>Sort:</span> <%= sortType %>
+          <span class="remove-query-icon">&times</span>
+        </button>
+      </form>
+    </div>
+
+    <div class="current-query-form">
+      <form class="" action="/amounts/queries/adjust" method="post">
+        <% if (!minAdjusted) { %>
+          <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="minDate">
+                From:  <%= minDate.month %>/<%= minDate.day %>/<%= minDate.year %>
+            <span class="remove-query-icon">&times</span>
+          </button>
+        <% } %>
+      </form>
+    </div>
+
+    <div class="current-query-form">
+      <form class="" action="/amounts/queries/adjust" method="post">
+        <% if (!maxAdjusted) { %>
+          <button class="remove-query-button btn btn-md btn-dark" name="removeItem" type="submit" value="maxDate">
+            To: <%= maxDate.month %>/<%= maxDate.day %>/<%= maxDate.year %>
+            <span class="remove-query-icon">&times</span>
+          </button>
+        <% } %>
+      </form>
+    </div>
+</div>

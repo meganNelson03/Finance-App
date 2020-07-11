@@ -1,4 +1,4 @@
-<%- include("partials/header.ejs") -%>
+<%- include("../partials/header.ejs") -%>
 
 
 <div class="container-fluid">
@@ -21,15 +21,20 @@
     <div class="form-section">
       <div class="row">
         <div class="col-lg-6">
-          <div class="row">
-            <div class="col-lg-2">
-            </div>
-            <div class="col-lg-10">
-              <h3 class="amount-header">Add New Amount</h3>
-            </div>
-          </div>
 
           <form class="amount-form" action="/" method="post">
+
+            <div class="row">
+              <div class="col-lg-10">
+                <h3 class="amount-header">Add New Amount</h3>
+              </div>
+              <div class="col-lg-2">
+                <div class="amount-submit">
+                  <button class="submit-amount" type="submit" name="button">+</button>
+                </div>
+              </div>
+            </div>
+
             <div class="amount-type">
               <div class="row">
                 <div class="col-lg-2 col-2">
@@ -76,22 +81,26 @@
               </div>
             </div>
 
-            <div class="amount-submit">
-              <button class="submit-amount" type="submit" name="button">+</button>
-            </div>
+
           </form>
         </div>
 
         <div class="col-lg-6">
-          <div class="row">
-            <div class="col-lg-2">
-            </div>
-            <div class="col-lg-10">
-              <h3 class="filter-header">Filter</h3>
-            </div>
-          </div>
+
 
           <form class="filter-form" action="/amounts" method="get">
+
+            <div class="row">
+              <div class="col-lg-10">
+                <h3 class="filter-header">Filter</h3>
+              </div>
+              <div class="col-lg-2">
+                <div class="filter-submit">
+                  <button type="submit" name="button" value="none">Find</button>
+                </div>
+              </div>
+            </div>
+
             <div class="filter-type">
               <div class="row">
                 <div class="col-lg-2 col-2">
@@ -129,9 +138,23 @@
               </div>
             </div>
 
-            <div class="filter-submit">
-              <button type="submit" name="button" value="none">Find</button>
+            <div class="filter-sort">
+              <div class="row">
+                <div class="col-lg-2 col-2">
+                  <label for="">Sort By:</label>
+                </div>
+                <div class="col-lg-10 col-10">
+                  <select class="" name="sortType">
+                    <option value="dateAscending">Date Ascending</option>
+                    <option value="dateDescending">Date Descending</option>
+                    <option value="amountAscending">Lowest Amount</option>
+                    <option value="amountDescending">Highest Amount</option>
+                  </select>
+                </div>
+              </div>
             </div>
+
+
           </form>
         </div>
 
@@ -147,10 +170,10 @@
   <% } else if (type == "income") { %>
     <%- include("./incomelist.ejs") -%>
   <% } else { %>
-    <%- include("./listy.ejs") -%>
+    <%- include("./financeslist.ejs") -%>
   <% } %>
 
 
 </div>
 
-<%- include("partials/footer.ejs") -%>
+<%- include("../partials/footer.ejs") -%>

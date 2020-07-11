@@ -28,6 +28,39 @@ module.exports.getAmountDetails = function(query, queryDate, queryType, queryAmo
 
 }
 
+module.exports.sortQueryResult = function(type) {
+
+  if (type == "dateDescending") {
+    return {"date.day": -1, "date.month": -1, "date.year": -1};
+  } else if (type == "dateAscending") {
+    return {"date.day": 1, "date.month": 1, "date.year": 1};
+  } else if (type == "amountDescending") {
+    return {amount: -1};
+  } else if (type == "amountAscending") {
+    return {amount: 1};
+  }
+
+}
+
+module.exports.getSortQueryString = function(type) {
+
+  if (type == "dateDescending") {
+    return "Date Descending";
+  } else if (type == "dateAscending") {
+    return"Date Ascending";
+  } else if (type == "amountDescending") {
+    return "Low Amount";
+  } else if (type == "amountAscending") {
+    return"High Amount";
+  }
+
+}
+
+module.exports.func = function(x) {
+  x = 1;
+  return "hello";
+}
+
 module.exports.addAmount = function(amounts, income, expense, callBack) {
 
   Promise.all(amounts.map(amount => {
@@ -64,7 +97,7 @@ module.exports.createQueryObj = function(query, caseList) {
         maxMonth = parseInt(query[key].substr(5,2));
         maxYear = parseInt(query[key].substr(0,4));
       }
-    } else {
+    } else if (key != "sortType"){
       newQuery[key] = query[key];
     }
   })
@@ -77,7 +110,7 @@ module.exports.createQueryObj = function(query, caseList) {
 
 }
 
-module.exports.adjustCurrentQuery = function(query, minDate, maxDate, adjustingQuery, caseList) {
+module.exports.adjustCurrentQuery = function(query, minDate, maxDate, removeOptions, adjustingQuery, caseList) {
 
   var newQuery = {};
 
@@ -115,13 +148,12 @@ module.exports.adjustCurrentQuery = function(query, minDate, maxDate, adjustingQ
   }
 
   if (adjustingQuery.minDate) {
-    minDate.removed = true;
+    removeOptions.minDate = true;
 
   } else if (adjustingQuery.maxDate) {
-    maxDate.removed = true;
+    removeOptions.maxDate = true;
   }
 
-  console.log(newQuery);
   return newQuery;
 }
 

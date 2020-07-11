@@ -5,20 +5,11 @@ var express = require("express"),
     mongo = require("mongodb").MongoClient,
     app = express();
 
+//******* Requirements ***************
 var Money = require("./models/money.js");
 var compute = require(__dirname + "/data.js");
+var constants = require(__dirname + "/constants.js");
 
-const portNum = 3005;
-const url = 'mongodb://localhost:27017/finances_site';
-
-let currentQuery = {};
-let minDate, maxDate;
-let adjustingQuery = {
-  type: false,
-  minDate: false,
-  maxDate: false,
-  adjustedDate: false
-};
 
 // ****** App Configuration *********
 app.use(express.static(__dirname + "/public"));
@@ -28,7 +19,7 @@ app.use(bodyparser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 
-mongoose.connect(url, {
+mongoose.connect(constants.url, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   }, (err, client) => {
@@ -41,8 +32,9 @@ mongoose.connect(url, {
 
 app.get("/", (req, res) => {
 
-  currentQuery = {};
-  adjustingQuery = compute.setQuery(adjustingQuery, false);
+  constants.currentQuery = {};
+  constants.currentSortOption = "";
+  constants.adjustingQuery = compute.setQuery(constants.adjustingQuery, false);
 
   Money.find({}, (err, moneys) => {
     if (err) {
@@ -52,35 +44,44 @@ app.get("/", (req, res) => {
     const date = compute.formattedDate();
 
     compute.addAmount(moneys, 0, 0, (income, expense) => {
-      res.render("finances", {amounts: moneys, date: date, income: income, expense: expense, all: true, type: "none"});
+      res.render("finances/finances", {amounts: moneys, date: date, income: income, expense: expense, all: true, type: "none"});
     })
 
-  })
+  }).sort({"date.day": 1, "date.month": 1, "date.year": 1});
 })
+
+app.get("/about", (req, res) => {
+  res.render("about");
+});
 
 
 app.get("/amounts", (req, res) => {
 
-  if (adjustingQuery.minDate || adjustingQuery.maxDate || adjustingQuery.type) {
-    // Adjusting current query
-    currentQuery = compute.adjustCurrentQuery(currentQuery, minDate, maxDate, adjustingQuery, ["type", "date.day", "date.month", "date.year"]);
 
-    adjustingQuery.minDate = false;
-    adjustingQuery.maxDate = false;
-    adjustingQuery.type = false;
+  if (constants.adjustingQuery.minDate || constants.adjustingQuery.maxDate || constants.adjustingQuery.type) {
+    // Adjusting current query
+    constants.currentQuery = compute.adjustCurrentQuery(constants.currentQuery, constants.dateInfo.minDate, constants.dateInfo.maxDate, constants.removeOptions, constants.adjustingQuery, ["type", "date.day", "date.month", "date.year"]);
+    constants.adjustingQuery.minDate = false;
+    constants.adjustingQuery.maxDate = false;
+    constants.adjustingQuery.type = false;
 
   } else {
 
     if (JSON.stringify(req.query) == "{}") {
       res.redirect("/");
     } else {
-      minDate = compute.getDateString(req.query.minDate);
-      maxDate = compute.getDateString(req.query.maxDate);
-      currentQuery = compute.createQueryObj(req.query, ["type", "date.day", "date.month", "date.year"]);
+      constants.dateInfo.minDate = compute.getDateString(req.query.minDate);
+      constants.dateInfo.maxDate = compute.getDateString(req.query.maxDate);
+      constants.removeOptions.minDate = false;
+      constants.removeOptions.maxDate = false;
+
+      constants.sortOptions = compute.sortQueryResult(req.query.sortType);
+      constants.currentSortOption = compute.getSortQueryString(req.query.sortType);
+      constants.currentQuery = compute.createQueryObj(req.query, ["type", "date.day", "date.month", "date.year"]);
     }
   }
 
-  Money.find(currentQuery, (err, moneys) => {
+  Money.find(constants.currentQuery, (err, moneys) => {
     if (err) {
       console.log(err);
     }
@@ -88,35 +89,36 @@ app.get("/amounts", (req, res) => {
     let date = compute.formattedDate();
 
     compute.addAmount(moneys, 0, 0, (income, expense) => {
-      res.render("finances",
-      {amounts: moneys, minDate: minDate, maxDate: maxDate,
-        minAdjusted: minDate.removed, maxAdjusted: maxDate.removed,
-        date: date, income: income, expense: expense, all: false, type: currentQuery.type});
+      res.render("finances/finances",
+      {amounts: moneys, minDate: constants.dateInfo.minDate, maxDate: constants.dateInfo.maxDate,
+        minAdjusted: constants.removeOptions.minDate, maxAdjusted: constants.removeOptions.maxDate, sortType: constants.currentSortOption,
+        date: date, income: income, expense: expense, all: false, type: constants.currentQuery.type});
     });
 
-  })
+  }).sort(constants.sortOptions);
 
 
 })
 
 app.get("/amounts/queries", (req, res) => {
 
-  Money.find(currentQuery, (err, moneys) => {
+  Money.find(constants.currentQuery, (err, moneys) => {
     if (err) {
       console.log(err);
     }
 
-    minDate.removed = false;
-    minDate.removed = false;
+    constants.removeOptions.minDate = false;
+    constants.removeOptions.maxDate = false;
     let date = compute.formattedDate();
 
+
     compute.addAmount(moneys, 0, 0, (income, expense) => {
-      res.render("finances", {amounts: moneys, date: date, minDate: minDate, maxDate: maxDate,
-          minAdjusted: minDate.removed, maxAdjusted: minDate.removed,
-          income: income, expense: expense, all: false, type: currentQuery.type});
+      res.render("finances/finances", {amounts: moneys, date: date, minDate: constants.dateInfo.minDate, maxDate: constants.dateInfo.maxDate,
+          minAdjusted: constants.removeOptions.minDate, maxAdjusted: constants.removeOptions.maxDate, sortType: constants.currentSortOption,
+          income: income, expense: expense, all: false, type: constants.currentQuery.type});
     });
 
-  })
+  }).sort({"date.day": 1, "date.month": 1, "date.year": 1});
 
 })
 
@@ -137,10 +139,9 @@ app.post("/", (req, res) => {
       });
     }
 
-    if (JSON.stringify(currentQuery) == "{}") {
+    if (JSON.stringify(constants.currentQuery) == "{}") {
       res.redirect("/")
     } else {
-      console.log("redirc to /amounts/queries")
       res.redirect("/amounts/queries");
     }
 
@@ -149,11 +150,11 @@ app.post("/", (req, res) => {
 app.post("/amounts/queries/adjust", (req, res) => {
 
   if (req.body.removeItem == "minDate") {
-    adjustingQuery.minDate = true;
+    constants.adjustingQuery.minDate = true;
   } else if (req.body.removeItem == "maxDate") {
-    adjustingQuery.maxDate = true;
+    constants.adjustingQuery.maxDate = true;
   } else if (req.body.removeItem == "type") {
-    adjustingQuery.type = true;
+    constants.adjustingQuery.type = true;
   }
 
   res.redirect("/amounts");
@@ -166,9 +167,10 @@ app.delete("/:itemID", (req, res) => {
       console.log(err);
     }
 
-    if (JSON.stringify(currentQuery) == "{}") {
+    if (JSON.stringify(constants.currentQuery) == "{}") {
       res.redirect("/");
     } else {
+      console.log(constants.currentQuery);
       res.redirect("/amounts/queries");
     }
 
@@ -176,6 +178,6 @@ app.delete("/:itemID", (req, res) => {
 })
 
 
-app.listen(portNum, () => {
-  console.log(`Listening at ${portNum}...`);
+app.listen(constants.portNum, () => {
+  console.log(`Listening at ${constants.portNum}...`);
 })

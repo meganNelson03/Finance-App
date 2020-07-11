@@ -1,5 +1,11 @@
 body {
-  background-color: #ff9595;
+  background-color: #ddf1ff;
+  color: #4b545b;
+  font-family: "Open Sans", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "AbeeZee";
 }
 
 /**** FINANCE ADD/SEARCH SECTION *****/
@@ -31,15 +37,30 @@ body {
 
 /**** INCOME & EXPENSE SECTION *****/
 
+.amount-header, .filter-header {
+  text-align: left;
+  margin-left: 22%;
+}
+
+.form-section {
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
 .current-query-form {
   display: inline-block;
-  background-color: white;
+  margin-right: 2%;
 }
 
 .remove-query-button {
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   outline: none;
+}
+
+.remove-query-icon {
+  margin-left: 10px;
+  opacity: 0.5;
 }
 
 /***** INCOME LIST SECTION ******/
