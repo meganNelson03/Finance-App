@@ -1,18 +1,30 @@
-var displayed = false;
-
-$(".display-form").on("click", () => {
-  if (displayed) {
-    displayed = false;
-    $(".form-section").css("display", "none");
-    $(".display-form").html("<i class='fas fa-minus'></i>");
-  } else {
-    displayed = true;
-    $(".form-section").css("display", "block");
-    $(".display-form").html("<i class='fas fa-plus'></i>");
-  }
-})
+$(document).ready(function() {
 
 
-$(".remove-query-item").toggle("click", () => {
-  $(".remove-query-item").css("display", "none");
+  $("#display-form").on("click", () => {
+
+    // form-section
+    event.stopPropagation();
+    $(".form-section").toggleClass("show-form")
+    // $(event.target).html("<i class='fas fa-minus'></i>");
+  })
+
+
+  $("#display-query-button").on("click", () => {
+
+    // form-section
+    event.stopPropagation();
+    $(".current-query-container").css("background-color", "red");
+    $(".current-query-container").toggleClass("show-form");
+    // $(event.target).html("<i class='fas fa-plus'></i>");
+  })
+
+
+
+  $(".remove-query-item").toggle("click", () => {
+    $(".remove-query-item").css("display", "none");
+  })
+
+
+
 })

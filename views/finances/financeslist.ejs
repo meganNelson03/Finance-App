@@ -21,9 +21,14 @@
     </div>
 
     <div class="current-query-form">
-      <button type="button" class="remove-query-button btn btn-md btn-dark" name="removeItem" value="type">
-        Sort: <%= sortType %>
-      </button>
+      <form class="" action="/amounts/queries/adjust" method="post">
+        <% if (!sortAdjusted) { %>
+        <button type="submit" class="remove-query-button btn btn-md btn-dark" name="removeItem" value="sortType">
+          <span>Sort:</span> <%= sortType %>
+          <span class="remove-query-icon">&times</span>
+        </button>
+        <% } %>
+      </form>
     </div>
 
     <div class="current-query-form">
@@ -61,24 +66,24 @@
       <%  if (amount.type == "income") { %>
 
           <div class="income row">
-            <div class="col-lg-2 col-md-2 col-3">
+            <div class="amount-container col-lg-2 col-md-2 col-3">
               <div class="amount-date">
                 <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
               </div>
             </div>
-            <div class="col-lg-2 col-md-2 col-9">
+            <div class="amount-container col-lg-2 col-md-2 col-9">
               <div class="amount-amount">
                 <%= amount.amount %>
               </div>
             </div>
-            <div class="col-lg-7 col-md-7 col-12">
+            <div class="amount-container col-lg-7 col-md-7 col-12">
               <div class="amount-description">
                 <%= amount.description.substr(0, 40); %>
               </div>
             </div>
-            <div class="col-lg-1 col-md-1 col-12">
-              <form class="" action="/<%= amount._id %>?_method=DELETE" method="post">
-                <button id="del" class="delete-item" type="submit" name="button">-</button>
+            <div class="amount-button-container col-lg-1 col-md-1 col-12">
+              <form class="delete-item-form" action="/<%= amount._id %>?_method=DELETE" method="post">
+                <button class="" class="delete-item" type="submit" name="button"><i class="far fa-trash-alt"></i></button>
               </form>
             </div>
 
@@ -122,5 +127,3 @@
 
 </div>
 </div>
-
-<script src="./scripts/finances.js" charset="utf-8"></script>

@@ -11,13 +11,15 @@ module.exports =
   },
   removeOptions: {
     minDate: false,
-    maxDate: false
+    maxDate: false,
+    sortType: false
   },
   adjustingQuery: {
     type: false,
     minDate: false,
     maxDate: false,
-    adjustedDate: false
-  }
+    sortType: false
+  },
+  dateAdjusted: false
 
 }

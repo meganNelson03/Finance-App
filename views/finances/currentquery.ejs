@@ -13,7 +13,7 @@
     <div class="current-query-form">
       <form class="" action="/amounts/queries/adjust" method="post">
         <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="type">
-          <span>Type:</span> <%= type %>
+          <span>Type:</span> <span class="sort-type-text"><%= type %></span>
           <span class="remove-query-icon">&times</span>
         </button>
       </form>
@@ -21,10 +21,12 @@
 
     <div class="current-query-form">
       <form class="" action="/amounts/queries/adjust" method="post">
-        <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="type">
-          <span>Sort:</span> <%= sortType %>
-          <span class="remove-query-icon">&times</span>
-        </button>
+          <% if (!sortAdjusted) { %>
+              <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="sortType">
+                <span>Sort:</span> <%= sortType %>
+                <span class="remove-query-icon">&times</span>
+              </button>
+          <% } %>
       </form>
     </div>
 

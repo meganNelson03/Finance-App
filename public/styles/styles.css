@@ -8,6 +8,17 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "AbeeZee";
 }
 
+.show-form {
+  display: none;
+}
+
+/**** NAVBAR *******/
+
+.navbar-light {
+  background-color: #ddf1ff !important;
+}
+
+
 /**** FINANCE ADD/SEARCH SECTION *****/
 
 .container-fluid {
@@ -24,15 +35,37 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .index-hr {
-  border: 3px solid black;
+  border: 2px solid #4b545b;
 }
 
 .index-button-container {
   text-align: right;
 }
 
-.display-form {
+.display-form, #display-form {
   text-align: right;
+  background-color: #ddf1ff;
+  border: none;
+  font-size: 1.5rem;
+}
+
+.display-form:focus, #display-form:focus {
+  outline: none;
+}
+
+.filter-amount, .add-amount {
+  border-radius: 50%;
+}
+
+.add-amount-section, .filter-amount-section {
+  margin-top: 2%;
+}
+
+div[class^="col-lg"], div[class^="col-"] {
+  /* border-top: 2px solid lightgray;
+  border-bottom: 2px solid lightgray; */
+  width: 100%;
+  padding: 0%;
 }
 
 /**** INCOME & EXPENSE SECTION *****/
@@ -42,9 +75,80 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: 22%;
 }
 
+.amount-container {
+  width: 100%;
+  background-color: white;
+  border-left: 1px solid gray;
+  border-top: 1px solid gray;
+}
+
+.amount-container, .amount-button-container {
+  height: 35px;
+}
+
+ .amount-date .amount-description {
+  border-right: 0;
+}
+
+.amount-button-container {
+  position: relative;
+  height: 50%;
+}
+
+.delete-item-form {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.delete-item-form button {
+
+
+  border-radius: 0;
+  width: 100%;
+}
+
+.amount-button-container {
+  border: 1px solid;
+  width: 100%;
+}
+
+
+
+
+
+
+
 .form-section {
   padding-top: 2%;
   padding-bottom: 2%;
+}
+
+.form-section input, .form-section select {
+  border-radius: 0;
+  border: 1px solid gray;
+  border-left: 2px solid gray;
+  border-right: 2px solid gray;
+}
+
+.form-section input:focus, .form-section select:focus {
+  border-radius: 0;
+  border-color: blue;
+  outline: none;
+}
+
+.form-section .sort-select {
+  border-bottom: 2px solid gray;
+}
+
+.form-section .type-select {
+  border-top: 2px solid gray;
+}
+
+.form-section .amount-descriptor {
+  border-bottom: 2px solid gray;
 }
 
 .current-query-form {
@@ -61,6 +165,10 @@ h1, h2, h3, h4, h5, h6 {
 .remove-query-icon {
   margin-left: 10px;
   opacity: 0.5;
+}
+
+.sort-type-text {
+  text-transform: capitalize;
 }
 
 /***** INCOME LIST SECTION ******/

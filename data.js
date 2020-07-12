@@ -49,17 +49,13 @@ module.exports.getSortQueryString = function(type) {
   } else if (type == "dateAscending") {
     return"Date Ascending";
   } else if (type == "amountDescending") {
-    return "Low Amount";
+    return "Highest Amount";
   } else if (type == "amountAscending") {
-    return"High Amount";
+    return"Lowest Amount";
   }
 
 }
 
-module.exports.func = function(x) {
-  x = 1;
-  return "hello";
-}
 
 module.exports.addAmount = function(amounts, income, expense, callBack) {
 
@@ -110,7 +106,7 @@ module.exports.createQueryObj = function(query, caseList) {
 
 }
 
-module.exports.adjustCurrentQuery = function(query, minDate, maxDate, removeOptions, adjustingQuery, caseList) {
+module.exports.adjustCurrentQuery = function(query, minDate, maxDate, removeOptions, adjustingQuery, dateAdjusted, caseList) {
 
   var newQuery = {};
 
@@ -124,36 +120,32 @@ module.exports.adjustCurrentQuery = function(query, minDate, maxDate, removeOpti
     }
   })
 
-  if (adjustingQuery.minDate && !(adjustingQuery.adjustedDate)) {
+  if (adjustingQuery.minDate && !(dateAdjusted)) {
+
     newQuery[caseList[1]] = {$lte: maxDate.day};
     newQuery[caseList[2]] = {$lte: maxDate.month};
     newQuery[caseList[3]] = {$lte: maxDate.year};
-    adjustingQuery.adjustedDate = true;
-  } else if (adjustingQuery.maxDate && !(adjustingQuery.adjustedDate)) {
+
+  } else if (adjustingQuery.maxDate && !(dateAdjusted)) {
     newQuery[caseList[1]] = {$gte: minDate.day};
     newQuery[caseList[2]] = {$gte: minDate.month};
     newQuery[caseList[3]] = {$gte: minDate.year};
-    adjustingQuery.adjustedDate = true;
-  } else if (adjustingQuery.adjustedDate) {
-    if (minDate.removed) {
+
+  } else if (dateAdjusted) {
+    console.log("date was adjusted");
+    if (removeOptions.minDate || removeOptions.maxDate) {
       newQuery[caseList[1]] = {$gte: 0};
       newQuery[caseList[2]] = {$gte: 0};
       newQuery[caseList[3]] = {$gte: 0};
-    } else if (maxDate.removed) {
-      newQuery[caseList[1]] = {$gte: minDate.day};
-      newQuery[caseList[2]] = {$gte: minDate.month};
-      newQuery[caseList[3]] = {$gte: minDate.year};
     }
 
   }
-
-  if (adjustingQuery.minDate) {
-    removeOptions.minDate = true;
-
-  } else if (adjustingQuery.maxDate) {
-    removeOptions.maxDate = true;
+ 
+  if (adjustingQuery.sortType) {
+    removeOptions.sortType = true;
   }
 
+  console.log(newQuery);
   return newQuery;
 }
 

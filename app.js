@@ -58,12 +58,22 @@ app.get("/about", (req, res) => {
 app.get("/amounts", (req, res) => {
 
 
-  if (constants.adjustingQuery.minDate || constants.adjustingQuery.maxDate || constants.adjustingQuery.type) {
+  if (constants.adjustingQuery.minDate || constants.adjustingQuery.maxDate || constants.adjustingQuery.type || constants.adjustingQuery.sortType) {
     // Adjusting current query
-    constants.currentQuery = compute.adjustCurrentQuery(constants.currentQuery, constants.dateInfo.minDate, constants.dateInfo.maxDate, constants.removeOptions, constants.adjustingQuery, ["type", "date.day", "date.month", "date.year"]);
+
+    constants.currentQuery = compute.adjustCurrentQuery(constants.currentQuery, constants.dateInfo.minDate, constants.dateInfo.maxDate, constants.removeOptions, constants.adjustingQuery, constants.dateAdjusted, ["type", "date.day", "date.month", "date.year"]);
+
+    if (constants.adjustingQuery.minDate || constants.adjustingQuery.maxDate) {
+      constants.dateAdjusted = true;
+    }
+
     constants.adjustingQuery.minDate = false;
     constants.adjustingQuery.maxDate = false;
     constants.adjustingQuery.type = false;
+    constants.adjustingQuery.sortType = false;
+
+
+    constants.sortOptions = {"date.day": 1, "date.month": 1, "date.year": 1};
 
   } else {
 
@@ -74,6 +84,9 @@ app.get("/amounts", (req, res) => {
       constants.dateInfo.maxDate = compute.getDateString(req.query.maxDate);
       constants.removeOptions.minDate = false;
       constants.removeOptions.maxDate = false;
+      constants.removeOptions.sortType = false;
+      constants.dateAdjusted = false;
+
 
       constants.sortOptions = compute.sortQueryResult(req.query.sortType);
       constants.currentSortOption = compute.getSortQueryString(req.query.sortType);
@@ -91,7 +104,8 @@ app.get("/amounts", (req, res) => {
     compute.addAmount(moneys, 0, 0, (income, expense) => {
       res.render("finances/finances",
       {amounts: moneys, minDate: constants.dateInfo.minDate, maxDate: constants.dateInfo.maxDate,
-        minAdjusted: constants.removeOptions.minDate, maxAdjusted: constants.removeOptions.maxDate, sortType: constants.currentSortOption,
+        minAdjusted: constants.removeOptions.minDate, maxAdjusted: constants.removeOptions.maxDate,
+        sortAdjusted: constants.removeOptions.sortType, sortType: constants.currentSortOption,
         date: date, income: income, expense: expense, all: false, type: constants.currentQuery.type});
     });
 
@@ -114,7 +128,8 @@ app.get("/amounts/queries", (req, res) => {
 
     compute.addAmount(moneys, 0, 0, (income, expense) => {
       res.render("finances/finances", {amounts: moneys, date: date, minDate: constants.dateInfo.minDate, maxDate: constants.dateInfo.maxDate,
-          minAdjusted: constants.removeOptions.minDate, maxAdjusted: constants.removeOptions.maxDate, sortType: constants.currentSortOption,
+          minAdjusted: constants.removeOptions.minDate, maxAdjusted: constants.removeOptions.maxDate,
+          sortAdjusted: constants.removeOptions.sortType, sortType: constants.currentSortOption,
           income: income, expense: expense, all: false, type: constants.currentQuery.type});
     });
 
@@ -150,11 +165,15 @@ app.post("/", (req, res) => {
 app.post("/amounts/queries/adjust", (req, res) => {
 
   if (req.body.removeItem == "minDate") {
+    constants.removeOptions.minDate = true;
     constants.adjustingQuery.minDate = true;
   } else if (req.body.removeItem == "maxDate") {
+    constants.removeOptions.maxDate = true;
     constants.adjustingQuery.maxDate = true;
   } else if (req.body.removeItem == "type") {
     constants.adjustingQuery.type = true;
+  } else if (req.body.removeItem == "sortType") {
+    constants.adjustingQuery.sortType = true;
   }
 
   res.redirect("/amounts");
@@ -170,7 +189,6 @@ app.delete("/:itemID", (req, res) => {
     if (JSON.stringify(constants.currentQuery) == "{}") {
       res.redirect("/");
     } else {
-      console.log(constants.currentQuery);
       res.redirect("/amounts/queries");
     }
 
