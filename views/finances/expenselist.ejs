@@ -33,7 +33,7 @@
             </div>
           </div>
           <div data-state="<%= theme %>" class="amount-button-container col-lg-1 col-md-1 col-1">
-            <form class="delete-item-form" action="/<%= amount._id %>?_method=DELETE" method="post">
+            <form class="delete-item-form" action="/finances/<%= amount._id %>?_method=DELETE" method="post">
               <button id="del" class="delete-item" type="submit" name="button"><i class="far fa-trash-alt"></i></button>
             </form>
           </div>

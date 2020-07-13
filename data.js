@@ -13,7 +13,7 @@ module.exports.getDateString = function getDateString(query) {
   return dateInfo;
 }
 
-module.exports.getAmountDetails = function(query, queryDate, queryType, queryAmount, queryDescription) {
+module.exports.getAmountDetails = function(query, queryDate, queryType, queryAmount, queryDescription, author) {
 
   const dateInfo = getDateString(queryDate);
 
@@ -21,7 +21,8 @@ module.exports.getAmountDetails = function(query, queryDate, queryType, queryAmo
     type: queryType,
     amount: Math.abs(queryAmount),
     date: dateInfo,
-    description: queryDescription
+    description: queryDescription,
+    author: author
   }
 
   return details;
@@ -102,6 +103,7 @@ module.exports.createQueryObj = function(query, caseList) {
   newQuery["date.day"] = {$gte: minDay, $lte: maxDay};
   newQuery["date.month"] = {$gte: minMonth, $lte: maxMonth};
   newQuery["date.year"] = {$gte: minYear, $lte: maxYear};
+
 
   return newQuery;
 

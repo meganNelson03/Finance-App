@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+var middleware = require("../middleware/index.js")
 
 // REQUIREMENTS
 var Money = require("../models/money.js");
@@ -7,12 +8,14 @@ var compute = require("../data.js");
 var constants = require("../constants.js");
 
 
-router.get("/", (req, res) => {
+router.get("/", middleware.isLoggedIn, (req, res) => {
   constants.currentQuery = {};
   constants.currentSortOption = "";
   constants.adjustingQuery = compute.setQuery(constants.adjustingQuery, false);
+  console.log("id:");
+  console.log(req.user._id);
 
-  Money.find({}, (err, moneys) => {
+  Money.find({"author.id": req.user._id}, (err, moneys) => {
     if (err) {
       console.log(err);
     }
@@ -26,14 +29,15 @@ router.get("/", (req, res) => {
   }).sort({"date.day": 1, "date.month": 1, "date.year": 1});
 })
 
-router.get("/about", (req, res) => {
-  res.render("about");
-});
 
+router.post("/", middleware.isLoggedIn, (req, res) => {
 
-router.post("/", (req, res) => {
+    var author = {
+      id: req.user._id,
+      username: req.user.username
+    }
 
-    const newAmount = compute.getAmountDetails(req.body, req.body.newDate, req.body.newType, req.body.newAmount, req.body.newDescription);
+    const newAmount = compute.getAmountDetails(req.body, req.body.newDate, req.body.newType, req.body.newAmount, req.body.newDescription, author);
 
     if (newAmount.amount > 99999) {
       console.log("Error: amount is invalid.");
@@ -41,16 +45,16 @@ router.post("/", (req, res) => {
       Money.create(newAmount, (err, newMoney) => {
         if (err) {
           console.log(err);
-          res.redirect("/");
+          res.redirect("/finances");
         }
 
       });
     }
 
     if (JSON.stringify(constants.currentQuery) == "{}") {
-      res.redirect("/")
+      res.redirect("/finances")
     } else {
-      res.redirect("/amounts/queries");
+      res.redirect("/finances/amounts/queries");
     }
 
 });
@@ -58,7 +62,7 @@ router.post("/", (req, res) => {
 router.post("/theme", (req, res) => {
   constants.currentTheme == "dark" ? constants.currentTheme = "light" : constants.currentTheme = "dark";
 
-  res.redirect("back"); 
+  res.redirect("back");
 })
 
 router.delete("/:itemID", (req, res) => {
@@ -68,9 +72,9 @@ router.delete("/:itemID", (req, res) => {
     }
 
     if (JSON.stringify(constants.currentQuery) == "{}") {
-      res.redirect("/");
+      res.redirect("/finances");
     } else {
-      res.redirect("/amounts/queries");
+      res.redirect("/finances/amounts/queries");
     }
 
   });

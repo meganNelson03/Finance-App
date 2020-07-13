@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Sign Up</title>
+
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/ffc6eb7467.js" crossorigin="anonymous"></script>
+
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=ABeeZee&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
+
+    <!-- my styles -->
+    <link rel="stylesheet" href="/styles/styles.css">
+
+  </head>
+  <body>
+
+    <div class="error-message">
+      <h2><%= error %> </h2>
+    </div>
+
+    <div class="row">
+    	<h1 style="text-align: center;">Sign Up</h1>
+    	<div style="width: 30%; margin: 25px auto;">
+    		<form action="/register" method="post">
+    			<div class="form-group">
+    				<input class="form-control" type="text" name="username" placeholder="username">
+    			</div>
+    			<div class="form-group">
+    				<input class="form-control" type="text" name="password" placeholder="password">
+    			</div>
+    			<div class="form-group">
+    				<button class="btn btn-lg btn-primary btn-block">Sign Up</button>
+    			</div>
+    		</form>
+    		<a href="/campgrounds">Go Back</a>
+    	</div>
+    </div>
+
+  </body>
+</html>

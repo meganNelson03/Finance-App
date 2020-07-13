@@ -27,7 +27,7 @@ router.get("/", (req, res) => {
   } else {
 
     if (JSON.stringify(req.query) == "{}") {
-      res.redirect("/");
+      res.redirect("/finances");
     } else {
       constants.dateInfo.minDate = compute.getDateString(req.query.minDate);
       constants.dateInfo.maxDate = compute.getDateString(req.query.maxDate);
@@ -100,7 +100,7 @@ router.post("/queries/adjust", (req, res) => {
     constants.adjustingQuery.sortType = true;
   }
 
-  res.redirect("/amounts");
+  res.redirect("/finances/amounts");
 
 });
 

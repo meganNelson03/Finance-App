@@ -8,7 +8,14 @@ var moneySchema = new mongoose.Schema({
     month: Number,
     year: Number
   },
-	description: String
+	description: String,
+	author: {
+		id: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "User"
+		},
+		username: String
+	}
 });
 
 module.exports = mongoose.model("Money", moneySchema);
