@@ -57,6 +57,7 @@ module.exports.getSortQueryString = function(type) {
 }
 
 
+
 module.exports.addAmount = function(amounts, income, expense, callBack) {
 
   Promise.all(amounts.map(amount => {
@@ -140,7 +141,7 @@ module.exports.adjustCurrentQuery = function(query, minDate, maxDate, removeOpti
     }
 
   }
- 
+
   if (adjustingQuery.sortType) {
     removeOptions.sortType = true;
   }

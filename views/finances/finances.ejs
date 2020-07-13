@@ -6,14 +6,14 @@
   <div class="header-section">
     <h1 class="header-text">Finances</h1>
 
-    <hr class="index-hr">
+    <hr data-state="<%= theme %>" class="index-hr">
 
     <div class="row">
       <div class="col-10">
         <h2>Add and Filter</h2>
       </div>
       <div class="index-button-container col-2">
-        <button type="button" id="display-form" name="button"><i class="fas fa-plus"></i></button>
+        <button data-state="<%= theme %>" class="close-forms" type="button" id="display-form" name="button"><i class="fas fa-plus"></i></button>
       </div>
     </div>
 
@@ -25,10 +25,10 @@
           <form class="amount-form" action="/" method="post">
 
             <div class="row">
-              <div class="col-lg-10">
+              <div class="col-10">
                 <h3 class="amount-header">Add New Amount</h3>
               </div>
-              <div class="col-lg-2">
+              <div class="col-2">
                 <div class="amount-submit">
                   <button class="add-amount btn btn-md btn-dark" type="submit" name="button"><i class="fas fa-plus"></i></button>
                 </div>
@@ -36,13 +36,13 @@
             </div>
 
             <div class="add-amount-section">
-              <div class="amount-type">
+              <div class="amount-item amount-type">
                 <div class="row">
                   <div class="col-lg-2 col-2">
                     <label for="">Type:</label>
                   </div>
                   <div class="col-lg-10 col-10">
-                    <select class="type-select" name="newType">
+                    <select data-state="<%= theme %>" class="type-select" name="newType">
                       <option value="income">Income</option>
                       <option value="expense">Expense</option>
                     </select>
@@ -50,35 +50,35 @@
                 </div>
               </div>
 
-              <div class="">
+              <div class="amount-item">
                 <div class="row">
                   <div class="col-lg-2 col-2">
                     <label for="newDate">Date:</label>
                   </div>
                   <div class="col-lg-10 col-10">
-                    <input class="date-select" type="date" min="2018-12-31" max="<%= date %>" value="<%= date %>" name="newDate">
+                    <input data-state="<%= theme %>" class="date-select" type="date" min="2018-12-31" max="<%= date %>" value="<%= date %>" name="newDate">
                   </div>
                 </div>
               </div>
 
-              <div class="">
+              <div class="amount-item">
                 <div class="row">
                   <div class="col-lg-2 col-2">
                     <label for="newAmount">Amount:</label>
                   </div>
                   <div class="col-lg-10 col-10">
-                    <input class="amount-select" type="number" step="0.01" name="newAmount" placeholder="">
+                    <input data-state="<%= theme %>" class="amount-select" type="number" step="0.01" name="newAmount" placeholder="$">
                   </div>
                 </div>
               </div>
 
-              <div class="">
+              <div class="amount-item">
                 <div class="row">
                   <div class="col-lg-2 col-2">
                     <label for="newDescription">Notes:</label>
                   </div>
                   <div class="col-lg-10 col-10">
-                    <input class="amount-descriptor" type="text" name="newDescription" placeholder="Description" autocomplete="off">
+                    <input data-state="<%= theme %>" maxlength="40" class="amount-descriptor" type="text" name="newDescription" placeholder="Description" autocomplete="off">
                   </div>
                 </div>
               </div>
@@ -100,10 +100,10 @@
           <form class="filter-form" action="/amounts" method="get">
 
             <div class="row">
-              <div class="col-lg-10">
+              <div class="col-10">
                 <h3 class="filter-header">Filter</h3>
               </div>
-              <div class="col-lg-2">
+              <div class="col-2">
                 <div class="filter-submit">
                   <button class="filter-amount btn btn-md btn-dark" type="submit" name="button" value="none"><i class="fas fa-search"></i></button>
                 </div>
@@ -111,13 +111,13 @@
             </div>
 
             <div class="filter-amount-section">
-              <div class="filter-type">
+              <div class="filter-item filter-type">
                 <div class="row">
                   <div class="col-lg-2 col-2">
                     <label for="">Type:</label>
                   </div>
                   <div class="col-lg-10 col-10">
-                    <select class="type-select" name="type">
+                    <select data-state="<%= theme %>" class="type-select" name="type">
                       <option value="none">All</option>
                       <option value="income">Income</option>
                       <option value="expense">Expense</option>
@@ -126,35 +126,35 @@
                 </div>
               </div>
 
-              <div class="filter-from">
+              <div class="filter-item filter-from">
                 <div class="row">
                   <div class="col-lg-2 col-2">
                     <label for="">From:</label>
                   </div>
                   <div class="col-lg-10 col-10">
-                    <input class="date-select" type="date" name="minDate" value="<%= date %>">
+                    <input data-state="<%= theme %>" class="date-select" type="date" name="minDate" value="<%= date %>">
                   </div>
                 </div>
               </div>
 
-              <div class="filter-to">
+              <div class="filter-item filter-to">
                 <div class="row">
                   <div class="col-lg-2 col-2">
                     <label for="">To:</label>
                   </div>
                   <div class="col-lg-10 col-10">
-                    <input class="date-select" type="date" name="maxDate" value="<%= date %>">
+                    <input data-state="<%= theme %>" class="date-select" type="date" name="maxDate" value="<%= date %>">
                   </div>
                 </div>
               </div>
 
-              <div class="filter-sort">
+              <div class="filter-item filter-sort">
                 <div class="row">
                   <div class="col-lg-2 col-2">
                     <label for="">Sort By:</label>
                   </div>
                   <div class="col-lg-10 col-10">
-                    <select class="sort-select" name="sortType">
+                    <select data-state="<%= theme %>" class="sort-select" name="sortType">
                       <option value="dateAscending">Date Ascending</option>
                       <option value="dateDescending">Date Descending</option>
                       <option value="amountAscending">Lowest Amount</option>
@@ -180,7 +180,7 @@
       </div>
     </div>
 
-    <hr class="index-hr">
+    <hr data-state="<%= theme %>" class="index-hr">
 
   </div>
 

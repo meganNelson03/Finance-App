@@ -54,34 +54,41 @@
     </div>
   </div>
 
-<hr class="index-hr">
+<hr data-state="<%= theme %>" class="index-hr">
 
 <% } %>
 
 
-  <div class="row">
-    <div class="income-section col-lg-6">
-      <h3>Income <span class="income-title"><%= income %></span></h3>
+  <div class="amounts-section row">
+    <div class="amount-section col-lg-6">
+      <div class="amount-section-header-row row">
+        <div class="col-8">
+          <h3 class="amounts-header">Income </h3>
+        </div>
+        <div class="col-3">
+          <span data-state="<%= theme %>" class="income-total">$<%= Number(parseFloat(income).toFixed(2)).toLocaleString('en'); %></span>
+        </div>
+      </div>
       <% amounts.forEach(function(amount){ %>
       <%  if (amount.type == "income") { %>
 
-          <div class="income row">
-            <div class="amount-container col-lg-2 col-md-2 col-3">
+          <div class="amount row">
+            <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-3">
               <div class="amount-date">
                 <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
               </div>
             </div>
-            <div class="amount-container col-lg-2 col-md-2 col-9">
+            <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-2">
               <div class="amount-amount">
-                <%= amount.amount %>
+                <span class="dollar">$</span><%= Number(parseFloat(amount.amount).toFixed(2)).toLocaleString('en'); %>
               </div>
             </div>
-            <div class="amount-container col-lg-7 col-md-7 col-12">
+            <div data-state="<%= theme %>" class="amount-container col-lg-7 col-md-7 col-6">
               <div class="amount-description">
                 <%= amount.description.substr(0, 40); %>
               </div>
             </div>
-            <div class="amount-button-container col-lg-1 col-md-1 col-12">
+            <div data-state="<%= theme %>" class="amount-button-container col-lg-1 col-md-1 col-1">
               <form class="delete-item-form" action="/<%= amount._id %>?_method=DELETE" method="post">
                 <button class="" class="delete-item" type="submit" name="button"><i class="far fa-trash-alt"></i></button>
               </form>
@@ -92,30 +99,37 @@
       <%  } %>
       <% }) %>
     </div>
-    <div class="expense-section col-lg-6">
-        <h3>Expense <span class="expense-total"><%= expense %></span></h3>
+    <div class="amount-section col-lg-6">
+      <div class="amount-section-header-row row">
+        <div class="col-8">
+          <h3 class="amounts-header">Expense</h3>
+        </div>
+        <div class="col-3">
+          <span data-state="<%= theme %>" class="expense-total">$<%= Number(parseFloat(expense).toFixed(2)).toLocaleString('en'); %></span>
+        </div>
+      </div>
         <% amounts.forEach(function(amount){ %>
         <% if (amount.type == "expense") { %>
 
-              <div class="expense row">
-                <div class="col-lg-2 col-md-2 col-3">
+              <div class="amount row">
+                <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-3">
                   <div class="amount-date">
                     <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
                   </div>
                 </div>
-                <div class="col-lg-2 col-md-2 col-9">
+                <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-2">
                   <div class="amount-amount">
-                    <%= amount.amount %>
+                    <span class="dollar">$</span><%= Number(parseFloat(amount.amount).toFixed(2)).toLocaleString('en'); %>
                   </div>
                 </div>
-                <div class="col-lg-7 col-md-7 col-12">
+                <div data-state="<%= theme %>" class="amount-container col-lg-7 col-md-7 col-6">
                   <div class="amount-description">
                     <%= amount.description.substr(0, 40); %>
                   </div>
                 </div>
-                <div class="col-lg-1 col-md-1 col-12">
-                  <form class="" action="/<%= amount._id %>?_method=DELETE" method="post">
-                    <button class="delete-item" type="submit" name="button">-</button>
+                <div class="amount-button-container col-lg-1 col-md-1 col-1">
+                  <form class="delete-item-form" action="/<%= amount._id %>?_method=DELETE" method="post">
+                    <button class="delete-item" type="submit" name="button"><i class="far fa-trash-alt"></i></button>
                   </form>
                 </div>
               </div>

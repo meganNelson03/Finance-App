@@ -4,6 +4,7 @@ module.exports =
   url: 'mongodb://localhost:27017/finances_site',
   currentQuery : {},
   currentSortOption : "",
+  currentTheme : "dark",
   sortOptions: {},
   dateInfo: {
     minDate: {},
