@@ -2,8 +2,14 @@ var express = require("express");
 var router = express.Router();
 var passport = require("passport");
 var User = require("../models/user.js");
+var constants = require("../constants.js");
 
 router.get("/", function(req, res){
+  console.log("***********")
+  console.log("curr quer:");
+  console.log(constants.currentQuery);
+  console.log(constants.currentTheme);
+  console.log("***********")
    res.render("register", {error: ""});
 });
 

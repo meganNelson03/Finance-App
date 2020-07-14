@@ -1,12 +1,14 @@
 var express = require("express");
 var router = express.Router();
+var middleware = require("../middleware/index.js");
 
 // REQUIREMENTS
 var Money = require("../models/money.js");
+var User = require("../models/user.js")
 var compute = require("../data.js");
 var constants = require("../constants.js");
 
-router.get("/", (req, res) => {
+router.get("/", middleware.isLoggedIn, (req, res) => {
 
   if (constants.adjustingQuery.minDate || constants.adjustingQuery.maxDate || constants.adjustingQuery.type || constants.adjustingQuery.sortType) {
     // Adjusting current query
@@ -43,46 +45,62 @@ router.get("/", (req, res) => {
     }
   }
 
-  Money.find(constants.currentQuery, (err, moneys) => {
+  User.find({"_id" : req.user._id}, (err, user) => {
     if (err) {
       console.log(err);
     }
 
-    let date = compute.formattedDate();
+    constants.currentQuery._id = user[0].moneyList;
 
-    compute.addAmount(moneys, 0, 0, (income, expense) => {
-      res.render("finances/finances",
-      {amounts: moneys, minDate: constants.dateInfo.minDate, maxDate: constants.dateInfo.maxDate,
-        minAdjusted: constants.removeOptions.minDate, maxAdjusted: constants.removeOptions.maxDate,
-        sortAdjusted: constants.removeOptions.sortType, sortType: constants.currentSortOption,
-        date: date, income: income, expense: expense, theme: constants.currentTheme, all: false, type: constants.currentQuery.type});
-    });
+    Money.find(constants.currentQuery, (err, moneys) => {
+      const date = compute.formattedDate();
 
-  }).sort(constants.sortOptions);
+      compute.addAmount(moneys, 0, 0, (income, expense) => {
+        res.render("finances/finances",
+        {amounts: moneys, minDate: constants.dateInfo.minDate, maxDate: constants.dateInfo.maxDate,
+          minAdjusted: constants.removeOptions.minDate, maxAdjusted: constants.removeOptions.maxDate,
+          sortAdjusted: constants.removeOptions.sortType, sortType: constants.currentSortOption,
+          date: date, income: income, expense: expense, theme: constants.currentTheme, all: false, type: constants.currentQuery.type});
+      });
+
+    }).sort(constants.sortOptions);
+
+  })
 
 })
 
 
 router.get("/queries", (req, res) => {
 
-  Money.find(constants.currentQuery, (err, moneys) => {
+  User.find({_id: req.user._id}, (err, user) => {
     if (err) {
-      console.log(err);
+      console.log("Error: /queries user not found");
+      res.redirect("/");
     }
 
-    constants.removeOptions.minDate = false;
-    constants.removeOptions.maxDate = false;
-    let date = compute.formattedDate();
+    constants.currentQuery._id = user[0].moneyList;
+
+    Money.find(constants.currentQuery, (err, moneys) => {
+      if (err) {
+        console.log(err);
+      }
+
+      constants.removeOptions.minDate = false;
+      constants.removeOptions.maxDate = false;
+      let date = compute.formattedDate();
 
 
-    compute.addAmount(moneys, 0, 0, (income, expense) => {
-      res.render("finances/finances", {amounts: moneys, date: date, minDate: constants.dateInfo.minDate, maxDate: constants.dateInfo.maxDate,
-          minAdjusted: constants.removeOptions.minDate, maxAdjusted: constants.removeOptions.maxDate,
-          sortAdjusted: constants.removeOptions.sortType, sortType: constants.currentSortOption,
-          income: income, expense: expense, all: false, theme: constants.currentTheme, type: constants.currentQuery.type});
-    });
+      compute.addAmount(moneys, 0, 0, (income, expense) => {
+        res.render("finances/finances", {amounts: moneys, date: date, minDate: constants.dateInfo.minDate, maxDate: constants.dateInfo.maxDate,
+            minAdjusted: constants.removeOptions.minDate, maxAdjusted: constants.removeOptions.maxDate,
+            sortAdjusted: constants.removeOptions.sortType, sortType: constants.currentSortOption,
+            income: income, expense: expense, all: false, theme: constants.currentTheme, type: constants.currentQuery.type});
+      });
 
-  }).sort({"date.day": 1, "date.month": 1, "date.year": 1});
+    }).sort({"date.day": 1, "date.month": 1, "date.year": 1});
+
+
+  })
 
 })
 
