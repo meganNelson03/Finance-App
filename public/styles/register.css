@@ -17,7 +17,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar-light {
-  background-color: transparent;
+  background-color: #b0edee !important;
 }
 
 .nav .navbar-nav li a {
@@ -26,11 +26,11 @@ h1, h2, h3, h4, h5, h6 {
 
 
 .navbar-brand {
-  margin-left: 10%;
+  margin-left: 11%;
 }
 
 .navbar-nav {
-  padding-right: 10%;
+  padding-right: 13.5%;
 }
 
 .nav-link {
@@ -64,7 +64,7 @@ h1, h2, h3, h4, h5, h6 {
 /***********/
 
 .budgeting-row {
-  padding: 7% 9% 7% 6%;
+  padding: 7% 12% 7% 9%;
 }
 
 .budgeting-header-container {
@@ -135,4 +135,53 @@ h1, h2, h3, h4, h5, h6 {
 .footer {
   text-align: center;
   color: white;
+}
+
+@media (max-width: 991px) {
+
+  .navbar {
+    display: none;
+  }
+
+  .footer p {
+    font-size: .8rem;
+  }
+
+  .navbar-brand {
+    display: none;
+  }
+
+  .navbar-nav {
+    padding-right: 0;
+  }
+
+  .budgeting-header-container {
+    text-align: center;
+    margin-bottom: 10%;
+  }
+
+  .budgeting-header-container h1 {
+    font-size: 3rem;
+    padding-bottom: 2%;
+  }
+
+  .header-hr {
+    width: 80%;
+    margin-left: auto;
+    margin-bottom: 5%;
+  }
+
+  .sign-up-container {
+    padding-left: 10%;
+    padding-right: 10%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+}
+
+@media (max-width: 1025px) and (max-height: 1367px) {
+  /* iPad Pro */
+
+
 }

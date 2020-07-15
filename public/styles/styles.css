@@ -437,13 +437,6 @@ body[data-state="dark"] {
 /**** RESPONSIVE ******/
 
 @media (max-width: 991px) {
-  * {
-    -webkit-transition: none !important;
-    -moz-transition: none !important;
-    -o-transition: none !important;
-    -ms-transition: none !important;
-    transition: none !important;
-  }
 
   .amount-section {
     margin-left: 5%;
@@ -476,5 +469,83 @@ body[data-state="dark"] {
     margin-right: 10%;
   }
 
+}
+
+@media (max-width: 600px) {
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  .income-total, .expense-total {
+    font-size: 1.5rem;
+  }
+
+  .change-theme-button {
+    top: 10px;
+    font-size: 1.25rem;
+  }
+
+  label {
+    font-size: .8rem;
+  }
+
+  .filter-amount, .add-amount {
+    margin-right: 10%;
+  }
+
+
+
+
+}
+
+@media (max-width: 768px) {
+  .amount {
+    position: relative;
+  }
+
+  .amount-button-container {
+    position: absolute;
+    top: 50%;
+    right: 0;
+  }
+
+  div.amount-container.col-12 {
+    border-top: none;
+  }
+
+  .amount-header, .filter-header {
+    position: relative;
+    top: 10px;
+    font-size: 1.15rem;
+    margin-bottom: 5%;
+  }
+
+  .filter-submit-container, .amount-submit-container {
+    position: relative;
+
+  }
+
+  .filter-submit-container button, .amount-submit-container button {
+    position: absolute;
+    top: -5px;
+    right: 0;
+    transform: scale(.7);
+  }
+
+}
+
+@media (max-width: 400px) {
+
+
+
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
 
 }

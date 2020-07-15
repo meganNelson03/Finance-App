@@ -73,17 +73,17 @@
       <%  if (amount.type == "income") { %>
 
           <div class="amount row">
-            <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-3">
+            <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-6">
               <div class="amount-date">
                 <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
               </div>
             </div>
-            <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-2">
+            <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-6">
               <div class="amount-amount">
                 <span class="dollar">$</span><%= Number(parseFloat(amount.amount).toFixed(2)).toLocaleString('en'); %>
               </div>
             </div>
-            <div data-state="<%= theme %>" class="amount-container col-lg-7 col-md-7 col-6">
+            <div data-state="<%= theme %>" class="amount-container col-lg-7 col-md-7 col-12">
               <div class="amount-description">
                 <%= amount.description.substr(0, 40); %>
               </div>
@@ -112,17 +112,17 @@
         <% if (amount.type == "expense") { %>
 
               <div class="amount row">
-                <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-3">
+                <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-6">
                   <div class="amount-date">
                     <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
                   </div>
                 </div>
-                <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-2">
+                <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-6">
                   <div class="amount-amount">
                     <span class="dollar">$</span><%= Number(parseFloat(amount.amount).toFixed(2)).toLocaleString('en'); %>
                   </div>
                 </div>
-                <div data-state="<%= theme %>" class="amount-container col-lg-7 col-md-7 col-6">
+                <div data-state="<%= theme %>" class="amount-container col-lg-7 col-md-7 col-12">
                   <div class="amount-description">
                     <%= amount.description.substr(0, 40); %>
                   </div>

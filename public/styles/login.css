@@ -50,9 +50,41 @@ body {
 
 .footer {
   color: white;
+  text-align: center;
+
 }
 
 .register-text {
   margin-top: 5px;
   font-size: .9rem;
+}
+
+/**** RESPONSIVE ******/
+
+@media (max-width: 600px) {
+
+  .container-fluid {
+    padding-top: 20%;
+  }
+
+  .login-header {
+    font-size: 1.75rem;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+  }
+
+  .footer p {
+    font-size: .8rem;
+  }
+
+  .login-form form {
+    min-width: 170px;
+  }
+
+  .login-form-container {
+    min-width: 250px;
+    padding-top: 10%;
+  }
 }
