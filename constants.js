@@ -1,6 +1,6 @@
 module.exports =
 {
-  portNum: "3005",
+  portNum: "3006",
   url: 'mongodb://localhost:27017/finances_site',
   currentQuery : {},
   currentSortOption : "",

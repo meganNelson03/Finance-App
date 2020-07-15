@@ -5,21 +5,12 @@ var User = require("../models/user.js");
 var constants = require("../constants.js");
 
 router.get("/", function(req, res){
-  console.log("***********")
-  console.log("curr quer:");
-  console.log(constants.currentQuery);
-  console.log(constants.currentTheme);
-  console.log("***********")
    res.render("register", {error: ""});
 });
 
 router.get("/about", (req, res) => {
   res.render("about");
 });
-
-// router.get("/register", (req, res) => {
-//   res.render("register", {page: 'register'});
-// });
 
 router.post("/register", (req, res) => {
 
@@ -33,7 +24,6 @@ router.post("/register", (req, res) => {
       console.log("Successful Authentication");
       res.redirect("/finances");
     });
-
 
   });
 });

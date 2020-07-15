@@ -57,8 +57,6 @@ module.exports.getSortQueryString = function(type) {
 
 }
 
-
-
 module.exports.addAmount = function(amounts, income, expense, callBack) {
 
   Promise.all(amounts.map(amount => {
@@ -103,7 +101,6 @@ module.exports.createQueryObj = function(query, caseList) {
   newQuery["date.day"] = {$gte: minDay, $lte: maxDay};
   newQuery["date.month"] = {$gte: minMonth, $lte: maxMonth};
   newQuery["date.year"] = {$gte: minYear, $lte: maxYear};
-
 
   return newQuery;
 
@@ -160,8 +157,6 @@ module.exports.setQuery = function(query, value) {
 
   return query;
 }
-
-
 
 function removeQueryValue(query, value) {
 
