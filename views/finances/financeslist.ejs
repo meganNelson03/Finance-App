@@ -8,11 +8,11 @@
       <h3>Current Search: </h3>
     </div>
     <div class="index-button-container col-2">
-        <button type="button" class="display-form" name="button"><i class="fas fa-plus"></i></button>
+        <button data-toggle="open" data-state="<%= theme %>" type="button" class="close-forms close-current-search" name="button"><i class="fas fa-plus"></i></button>
     </div>
   </div>
 
-  <div class="current-query-container">
+  <div data-state="open" class="current-query-container">
 
     <div class="current-query-form">
         <button type="button" class="remove-query-button btn btn-md btn-dark" name="removeItem" value="type">

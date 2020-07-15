@@ -44,15 +44,16 @@ h1, h2, h3, h4, h5, h6 {
 
 .sign-in-link .nav-link {
   border-radius: 3px;
-  background-color: #5dd95d;
-  border: 1px solid #5dd95d;
+  background-color: #0077ff;
+  border: 1px solid #0077ff;
   -webkit-box-shadow: -3px -14px 93px -22px rgba(0,0,0,0.75);
   -moz-box-shadow: -3px -14px 93px -22px rgba(0,0,0,0.75);
   box-shadow: -3px -14px 93px -22px rgba(0,0,0,0.75);
 }
 
 .sign-in-link .nav-link:hover {
-  background-color: #4ab04a;
+  background-color: #0063d4;
+  border-color: #0063d4;
 }
 
 .sign-in-link .nav-link {

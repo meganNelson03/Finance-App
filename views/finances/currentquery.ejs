@@ -1,15 +1,14 @@
+
 <div class="current-search-header row">
   <div class="col-10">
     <h3>Current Search: </h3>
   </div>
   <div class="index-button-container col-2">
-      <button type="button" class="display-form" name="button"><i class="fas fa-plus"></i></button>
+      <button data-state="<%= theme %>" type="button" class="close-forms close-current-search" name="button"><i class="fas fa-plus"></i></button>
   </div>
 </div>
 
-
-
-<div class="current-query-container">
+<div data-toggle="open" class="current-query-container">
     <div class="current-query-form">
       <form class="" action="/finances/amounts/queries/adjust" method="post">
         <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="type">
@@ -52,3 +51,6 @@
       </form>
     </div>
 </div>
+
+<script src="../scripts/finances.js" charset="utf-8"></script>
+<script src="./scripts/finances.js" charset="utf-8"></script>
