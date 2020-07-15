@@ -7,90 +7,84 @@ body {
   background-size: cover;
 }
 
+hr {
+  width: 80%;
+}
+
 .container-fluid {
-  padding: 7% 7%;
+  padding: 5% 10%;
 }
 
-.login-header {
-  padding-bottom: 2%;
-  padding-top: 3%;
-}
-
-.login-form form {
-  min-width: 300px;
-  text-align: left;
-  width: 30%;
-  margin: 0 auto;
-
-}
-
-.login-form-container {
-  border-radius: 5px;
-  background-color: white;
-  min-width: 400px;
+.contact-form-container {
   -webkit-box-shadow: 6px 4px 34px -12px rgba(0,0,0,0.57);
   -moz-box-shadow: 6px 4px 34px -12px rgba(0,0,0,0.57);
   box-shadow: 6px 4px 34px -12px rgba(0,0,0,0.57);
+  background-color: white;
+  border-radius: 5px;
+  width: 50%;
   margin: 0 auto;
-  width: 40%;
-  padding-right: 5%;
-  padding-left: 5%;
-  padding-top: 5%;
   padding-bottom: 5%;
+  padding-top: 2%;
 }
 
-.login-btn {
-  margin-top: 30px;
-  background-color: #5dd95d;
-  border-color: #5dd95d;
+.form {
+  width: 80%;
 }
 
-.login-btn:hover {
-  background-color: #4bad4b;
-  border-color: #4bad4b;
-}
-
-.icon {
-  padding-bottom: 1%;
+.form-group {
+  width: 80%;
+  padding-bottom: 10px;
+  margin: 0 auto;
 }
 
 .footer {
-  color: white;
   text-align: center;
-
 }
 
-.register-text {
-  margin-top: 5px;
+.footer p {
+  color: white;
   font-size: .9rem;
 }
 
-/**** RESPONSIVE ******/
+form {
+  text-align: left;
+}
+
+form textarea {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  border-color: gray;
+  border-radius: 4px;
+  width: 100%;
+  height: 150px;
+}
+
+@media (max-width: 991px) {
+  .container-fluid {
+    padding: 10% 5%;
+  }
+
+  .contact-form-container {
+    width: 80%;
+  }
+
+  .form-group {
+    width: 80%;
+  }
+}
 
 @media (max-width: 600px) {
 
-  .container-fluid {
-    padding-top: 20%;
+  .contact-form-container {
+    width: 90%;
   }
 
-  .login-header {
-    font-size: 1.75rem;
-  }
-
-  .icon {
+  h1 {
+    margin-top: 5%;
     font-size: 1.5rem;
   }
 
-  .footer p {
-    font-size: .8rem;
-  }
-
-  .login-form form {
-    min-width: 170px;
-  }
-
-  .login-form-container {
-    min-width: 250px;
-    padding-top: 10%;
+  label {
+    font-size: .9rem;
   }
 }

@@ -12,6 +12,10 @@ router.get("/about", (req, res) => {
   res.render("about");
 });
 
+router.get("/contact", (req, res) => {
+  res.render("contact");
+});
+
 router.post("/register", (req, res) => {
 
   User.register(new User({username: req.body.username}), req.body.password, (err, user) => {

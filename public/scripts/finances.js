@@ -36,7 +36,6 @@ $(document).ready(function() {
   })
 
   $(".change-theme-button").on("click", () => {
-
     toggleStates(["body", ".navbar-light", "#logo-icon", ".change-theme-button", ".navbar-light .nav .nav-link", ".close-forms", ".income-total", ".expense-total", ".index-hr", ".amount-container", ".form-section input", ".form-section select"], "data-state", "dark", "light");
     $(".change-theme-button").prop("innerHTML") == `<i class="fas fa-toggle-off" aria-hidden="true"></i>` ?
         $(".change-theme-button").html(`<i class='fas fa-toggle-on' aria-hidden="true"></i>`) :
