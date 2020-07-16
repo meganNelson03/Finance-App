@@ -18,18 +18,21 @@ $(document).ready(function() {
     toggleStates([".form-section"], "data-toggle", "open", "closed");
   })
 
-  $(".close-current-search").on("click", () => {
+  $(".show-description-button").on("click", () => {
 
     event.stopPropagation();
-    console.log($(event.target).parent().prop("innerHTML"))
+    var target = $(event.target).parent().siblings(".amount-description-container");
+    target.css("display") == "block" ? target.css("display", "none") : target.css("display", "block");
+
+  })
+
+  $(".close-current-search").on("click", () => {
 
     $(event.target).parent().prop("innerHTML") == '<i class="fas fa-minus" aria-hidden="true"></i>' ?
             $(event.target).parent().html('<i class="fas fa-plus" aria-hidden="true"></i>') :
             $(event.target).parent().html('<i class="fas fa-minus" aria-hidden="true"></i>');
     toggleStates([".current-query-container"], "data-toggle", "open", "closed");
   })
-
-
 
   $(".remove-query-item").toggle("click", () => {
     $(".remove-query-item").css("display", "none");

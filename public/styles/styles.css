@@ -227,6 +227,77 @@ body[data-state="dark"] {
 
 /**** INCOME & EXPENSE SECTION *****/
 
+.amount-income, .amount-expense {
+  position: relative;
+}
+
+.amount-income .amount-button-container, .amount-expense .amount-button-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.amount-button-container {
+  background-color: transparent;
+}
+
+
+
+/***** AMOUNT DESCRIPTION *****/
+
+.amount-description-container[data-toggle="closed"] {
+  display: none;
+}
+
+.delete .delete-item {
+  position: absolute;
+}
+
+.amount-show-container {
+  text-align: center;
+}
+
+.amount-container.amount-show-container.col-1 {
+  width: 10px;
+  padding: 0;
+}
+
+.show-description-button {
+  margin: 0 auto;
+  border-radius: 0;
+  font-size: 1.2rem;
+  padding: 0;
+  color: white;
+  height: 100%;
+  width: 100%;
+  border: 1px solid #389646;
+  background-color: #389646;
+}
+
+.show-description-button:hover {
+  background-color: #2b7837;
+  border-color: #2b7837;
+}
+
+.show-description-button:focus {
+  outline: none;
+}
+
+.amount {
+  position: relative;
+}
+
+.delete-item-button {
+  border: 1px solid red;
+  left: 50px;
+}
+
+.amount-button-container {
+  position: absolute;
+}
+
+/***************************/
+
 .amount-section {
   padding-left: 2%;
 }
@@ -287,6 +358,8 @@ body[data-state="dark"] {
   text-align: right;
 }
 
+
+
 .delete-item-form {
   position: absolute;
   top: 0;
@@ -311,7 +384,6 @@ body[data-state="dark"] {
 }
 
 .amount-button-container {
-  border-left: 1px solid #7d7d7d;
   width: 100%;
 }
 

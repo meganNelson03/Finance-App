@@ -72,27 +72,36 @@
       <% amounts.forEach(function(amount){ %>
       <%  if (amount.type == "income") { %>
 
-          <div class="amount row">
-            <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-6">
+          <div class="amount amount-income row">
+
+            <div data-state="<%= theme %>" class="amount-container amount-show-container col-1">
+              <button type="button" class="show-description-button" name="">+</button>
+            </div>
+
+            <div data-state="<%= theme %>" class="amount-container col-lg-4 col-4">
               <div class="amount-date">
                 <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
               </div>
             </div>
-            <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-6">
+
+            <div data-state="<%= theme %>" class="amount-container col-lg-6 col-6">
               <div class="amount-amount">
                 <span class="dollar">$</span><%= Number(parseFloat(amount.amount).toFixed(2)).toLocaleString('en'); %>
               </div>
             </div>
-            <div data-state="<%= theme %>" class="amount-container col-lg-7 col-md-7 col-12">
-              <div class="amount-description">
-                <%= amount.description.substr(0, 40); %>
-              </div>
-            </div>
-            <div data-state="<%= theme %>" class="amount-button-container col-lg-1 col-md-1 col-1">
+
+            <div data-state="<%= theme %>" class="amount-button-container col-1">
               <form class="delete-item-form" action="/finances/<%= amount._id %>?_method=DELETE" method="post">
                 <button class="" class="delete-item" type="submit" name="button"><i class="far fa-trash-alt"></i></button>
               </form>
             </div>
+
+            <div data-toggle="closed" data-state="<%= theme %>" class="amount-container amount-description-container col-11">
+              <div class="amount-description">
+                <%= amount.description.substr(0, 40); %>
+              </div>
+            </div>
+
 
           </div>
 
@@ -111,27 +120,37 @@
         <% amounts.forEach(function(amount){ %>
         <% if (amount.type == "expense") { %>
 
-              <div class="amount row">
-                <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-6">
+              <div class="amount amount-expense row">
+
+                <div data-state="<%= theme %>" class="amount-container amount-show-container col-1">
+                  <button type="button" class="show-description-button" name="">+</button>
+                </div>
+
+                <div data-state="<%= theme %>" class="amount-container col-4">
                   <div class="amount-date">
                     <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
                   </div>
                 </div>
-                <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-6">
+
+                <div data-state="<%= theme %>" class="amount-container col-6">
                   <div class="amount-amount">
                     <span class="dollar">$</span><%= Number(parseFloat(amount.amount).toFixed(2)).toLocaleString('en'); %>
                   </div>
                 </div>
-                <div data-state="<%= theme %>" class="amount-container col-lg-7 col-md-7 col-12">
+
+                <div class="amount-button-container col-1">
+                  <form class="delete-item-form" action="/finances/<%= amount._id %>?_method=DELETE" method="post">
+                    <button class="delete-item delete-item-button" type="submit" name="button"><i class="far fa-trash-alt"></i></button>
+                  </form>
+                </div>
+
+                <div data-toggle="closed" data-state="<%= theme %>" class="amount-container amount-description-container col-11">
                   <div class="amount-description">
                     <%= amount.description.substr(0, 40); %>
                   </div>
                 </div>
-                <div class="amount-button-container col-lg-1 col-md-1 col-1">
-                  <form class="delete-item-form" action="/finances/<%= amount._id %>?_method=DELETE" method="post">
-                    <button class="delete-item" type="submit" name="button"><i class="far fa-trash-alt"></i></button>
-                  </form>
-                </div>
+
+
               </div>
 
 
