@@ -38,3 +38,23 @@
       <form class="" action="/finances/theme" method="post">
         <button data-state="<%= theme %>" class="change-theme-button" type="submit" name="button"><i class="fas fa-toggle-off"></i></button>
       </form>
+
+
+      <!-- Success/error message for login/logout actions -->
+      <div class="container">
+          <% if (error && error.length>0) { %>
+              <div class="alert alert-danger" role="alert">
+                <h1><%= error %></h1>
+                <button class="exit-alert-button button-danger" type="button" name="button">
+                  &times;
+                </button>
+              </div>
+          <% } else if (success && success.length > 0) { %>
+              <div class="alert alert-success" role="alert">
+                <h1><%= success %></h1>
+                <button class="exit-alert-button button-success" type="button" name="button">
+                  &times;
+                </button>
+              </div>
+          <% } %>
+      </div>

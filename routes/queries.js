@@ -18,12 +18,7 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
       constants.dateAdjusted = true;
     }
 
-    constants.adjustingQuery.minDate = false;
-    constants.adjustingQuery.maxDate = false;
-    constants.adjustingQuery.type = false;
-    constants.adjustingQuery.sortType = false;
-
-
+    constants.adjustingQuery = compute.setQueryToFalse(constants.adjustingQuery);
     constants.sortOptions = {"date.day": 1, "date.month": 1, "date.year": 1};
 
   } else {
@@ -33,9 +28,8 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
     } else {
       constants.dateInfo.minDate = compute.getDateString(req.query.minDate);
       constants.dateInfo.maxDate = compute.getDateString(req.query.maxDate);
-      constants.removeOptions.minDate = false;
-      constants.removeOptions.maxDate = false;
-      constants.removeOptions.sortType = false;
+
+      constants.removeOptions = compute.setQueryToFalse(constants.removeOptions);
       constants.dateAdjusted = false;
 
 

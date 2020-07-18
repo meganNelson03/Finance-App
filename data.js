@@ -75,6 +75,28 @@ module.exports.addAmount = function(amounts, income, expense, callBack) {
 
 }
 
+module.exports.setQueryToFalse = function(query) {
+  console.log("query")
+  console.log(query);
+  Object.getOwnPropertyNames(query).forEach((key) => {
+    query[key] = false;
+  });
+
+  return query;
+}
+
+module.exports.isAdjusting = function(query) {
+
+  Object.getOwnPropertyNames(query).forEach((key) => {
+    if (query[key]) {
+      console.log("YES, IS ADJUSTING");
+      return true;
+    }
+  });
+
+  return false;
+}
+
 module.exports.createQueryObj = function(query, caseList) {
 
   var newQuery = {};
@@ -132,7 +154,7 @@ module.exports.adjustCurrentQuery = function(query, minDate, maxDate, removeOpti
     newQuery[caseList[3]] = {$gte: minDate.year};
 
   } else if (dateAdjusted) {
-    console.log("date was adjusted");
+
     if (removeOptions.minDate || removeOptions.maxDate) {
       newQuery[caseList[1]] = {$gte: 0};
       newQuery[caseList[2]] = {$gte: 0};

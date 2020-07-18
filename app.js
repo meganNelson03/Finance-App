@@ -3,6 +3,7 @@ var express               = require("express"),
     mongoose              = require("mongoose"),
     methodOverride        = require("method-override"),
     mongo                 = require("mongodb").MongoClient,
+    flash                 = require("connect-flash");
     passport              = require("passport"),
     LocalStrategy         = require("passport-local"),
     passportLocalMongoose = require("passport-local-mongoose"),
@@ -21,6 +22,7 @@ app.use(express.static(__dirname + "/public"));
 app.use(bodyparser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
+app.use(flash());
 
 mongoose.connect(constants.url, {
     useNewUrlParser: true,
@@ -47,6 +49,24 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new LocalStrategy(User.authenticate())); // .authenticate comes with passport-local-mongoose
+// passport.use(new LocalStrategy(
+//   function(username, password, done) {
+//       User.findOne({ username: username }, function (err, user) {
+//         console.log("USER:")
+//         console.log(user);
+//         if (err) {
+//           return done(err);
+//         }
+//         if (!user) {
+//           return done(null, false, {message: "Incorrect username, please try again."});
+//         }
+//         if (!user.validPassword(password)) {
+//           return done(null, false, {message: 'Incorrect password, please try again.' });
+//         }
+//         return done(null, user);
+//       });
+//     }
+// ));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -55,6 +75,8 @@ passport.deserializeUser(User.deserializeUser());
 // middleware that runs for every single route
 app.use(function(req, res, next) {
   res.locals.currentUser = req.user;
+  res.locals.error = req.flash("error");
+  res.locals.success = req.flash("success");
   next();
 });
 

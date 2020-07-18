@@ -33,6 +33,39 @@ h1, h2, h3, h4, h5, h6 {
   outline: none;
 }
 
+/**** ALERT *****/
+
+
+.alert h1 {
+  padding-top: 2%;
+  font-size: 1.25rem;
+  display: inline-block;
+}
+
+.alert .exit-alert-button {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  width: 5%;
+}
+
+.alert .exit-alert-button:hover {
+  background-color: #add9b8;
+}
+
+.alert .exit-alert-button:focus {
+  outline: none;
+}
+
+.alert.alert-success {
+  width: 60%;
+  margin: 2% auto 0% auto;
+  text-align: center;
+}
+
+
+
 /******FORM DISPLAY*****/
 
 .form-section[data-toggle="open"] {
@@ -58,7 +91,7 @@ body[data-state="light"] {
   color: black;
 }
 
-#logo-icon[data-state="light"] {
+.fa-money-bill-wave[data-state="light"] {
   color: black;
 }
 
@@ -108,8 +141,12 @@ body[data-state="light"] {
   background-color: white;
   border-left: 1px solid #cadbe0;
   border-right: 1px solid #cadbe0;
-  border-top: 2px solid #cadbe0;
-  border-bottom: 2px solid #cadbe0;
+  border-top: 1px solid #cadbe0;
+  border-bottom: 1px solid #cadbe0;
+}
+
+::placeholder[data-state="light"] {
+  color: gray;
 }
 
 /**** DARK ****/
@@ -119,8 +156,8 @@ body[data-state="dark"] {
   color: white;
 }
 
-#logo-icon[data-state="light"] {
-  color: black;
+.fa-money-bill-wave[data-state="dark"] {
+  color: white;
 }
 
 .navbar-light .nav .nav-link[data-state="dark"] {
@@ -170,6 +207,49 @@ body[data-state="dark"] {
   background-color: #7d7d7d;
   border-left: 2px solid #575656;
   border-top: 1px solid #575656;
+  border-bottom: 1px solid #575656;
+}
+
+::placeholder[data-state="dark"] {
+  color: white;
+}
+
+/**** ALERT *******/
+
+.alert {
+  width: 50%;
+  margin: 2% auto 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+.alert h1 {
+  padding-top: 2%;
+  font-size: 1rem;
+  display: inline-block;
+}
+
+.alert .exit-alert-button {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  width: 5%;
+  position: absolute;
+  top: 25%;
+  right: 50px;
+}
+
+.alert .button-danger:hover {
+  background-color: #dea9ad;
+}
+
+.alert .button-success:hover {
+  background-color: #add9b8;
+}
+
+.alert .exit-alert-button:focus {
+  outline: none;
 }
 
 
@@ -247,6 +327,15 @@ body[data-state="dark"] {
 
 .amount-description-container[data-toggle="closed"] {
   display: none;
+}
+
+.amount-container {
+
+}
+
+.amount-description {
+  padding-left: 1%;
+  border-top: 0px;
 }
 
 .delete .delete-item {
@@ -515,6 +604,10 @@ body[data-state="dark"] {
     margin-bottom: 7%;
   }
 
+  .amount-income .amount-button-container, .amount-expense .amount-button-container {
+    right: 35px;
+  }
+
   .income-only-section .amount-section, .expense-only-section .amount-section {
     margin-left: 2%;
   }
@@ -526,6 +619,7 @@ body[data-state="dark"] {
 
   .delete-item-form button {
     display: block;
+    width: 35px;
     animation: none;
   }
 

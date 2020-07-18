@@ -8,7 +8,7 @@ var User = require("../models/user.js");
 var compute = require("../data.js");
 var constants = require("../constants.js");
 
-
+// GET ALL MONEY ENTRIES
 router.get("/", middleware.isLoggedIn, (req, res) => {
   constants.currentQuery = {};
   constants.currentSortOption = "";
@@ -16,13 +16,14 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
 
   User.find({"_id" : req.user._id}, (err, user) => {
     if (err) {
-      console.log(err);
+      throw new Error("Error: User not found.");
     }
 
-    console.log("user:");
-    console.log(user);
-
     Money.find({"_id": user[0].moneyList}, (err, moneys) => {
+      if (err) {
+        throw new Error("Error: User's money list not found.");
+      }
+
       const date = compute.formattedDate();
 
       compute.addAmount(moneys, 0, 0, (income, expense) => {
@@ -34,6 +35,10 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
   })
 })
 
+router.post("/theme", middleware.isLoggedIn, (req, res) => {
+  constants.currentTheme == "dark" ? constants.currentTheme = "light" : constants.currentTheme = "dark";
+  res.redirect("back");
+})
 
 router.post("/", middleware.isLoggedIn, (req, res) => {
 
@@ -44,24 +49,20 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 
     const newAmount = compute.getAmountDetails(req.body, req.body.newDate, req.body.newType, req.body.newAmount, req.body.newDescription, author);
 
-    if (newAmount.amount > 99999) {
-      console.log("Error: amount is invalid.");
+    if (newAmount.amount > 99999 || newAmount.amount == 0) {
+      req.flash("error", "Amount is invalid, please try again.")
     } else {
       Money.create(newAmount, (err, newMoney) => {
         if (err) {
-          console.log(err);
+          req.flash("error", "Error: New entry could not be created, please try again.")
           res.redirect("/finances");
         }
 
-        console.log("newMoney:");
-        console.log(newMoney);
-
         User.findByIdAndUpdate({"_id" : req.user._id}, {$push: {moneyList: newMoney}}, (err, updatedUser) => {
           if (err) {
-            console.log(err);
+            throw new Error("Error: User information could not be updated.")
           }
-
-        })
+        });
 
       });
     }
@@ -74,24 +75,19 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
 
 });
 
-router.post("/theme", middleware.isLoggedIn, (req, res) => {
-  constants.currentTheme == "dark" ? constants.currentTheme = "light" : constants.currentTheme = "dark";
 
-  res.redirect("back");
-})
 
 router.delete("/:itemID", middleware.isLoggedIn, (req, res) => {
   Money.deleteOne({_id: req.params.itemID}, (err, deleted) => {
     if (err) {
-      console.log("Error: Couldn't find Money entry to delete");
+      req.flash("error", "Error: Couldn't find entry to delete. Please try again.")
+      res.redirect("/finances");
     }
 
-    User.findByIdAndUpdate({_id: req.user._id},
-
-        {$pull: {moneyList: req.params.itemID}}
-      , (err, user) => {
+    User.findByIdAndUpdate({_id: req.user._id}, {$pull: {moneyList: req.params.itemID}}, (err, user) => {
         if (err) {
-          console.log("Error: error deleting item from user's money list")
+          req.flash("error", "Error: There was an issue deleting an entry from your finances list. Please try again.")
+          res.redirect("/finances");
         }
       });
 

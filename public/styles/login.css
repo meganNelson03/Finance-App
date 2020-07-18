@@ -7,6 +7,40 @@ body {
   background-size: cover;
 }
 
+/*** SIGN-IN ERROR MESSAGE *****/
+
+
+.alert {
+  width: 50%;
+  margin: -5% auto 2% auto;
+}
+
+.alert h1 {
+  padding-top: 2%;
+  font-size: 1.25rem;
+  display: inline-block;
+}
+
+.alert .exit-alert-button {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  width: 5%;
+}
+
+.alert .exit-alert-button:hover {
+  background-color: #dea9ad;
+}
+
+.alert .exit-alert-button:focus {
+  outline: none;
+}
+
+/************/
+
+
+
 .container-fluid {
   padding: 7% 7%;
 }
@@ -86,11 +120,23 @@ body {
   }
 
   .login-form form {
-    min-width: 170px;
+    min-width: 200px;
   }
 
   .login-form-container {
-    min-width: 250px;
+    min-width: 275px;
     padding-top: 10%;
   }
+}
+
+@media (max-width: 991px) {
+  .alert h1 {
+    font-size: 1rem;
+  }
+
+  .alert {
+    width: 80%;
+  }
+
+
 }
