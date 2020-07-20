@@ -8,42 +8,46 @@
     <div class="col-8">
       <h3>Expense</h3>
     </div>
-    <div class="col-3">
-      <span data-state="dark" class="expense-total">$<%= Number(parseFloat(expense).toFixed(2)).toLocaleString('en'); %></span>
+    <div class="col-4">
+      <span data-state="dark" class="expense-total"><h3>$<%= Number(parseFloat(expense).toFixed(2)).toLocaleString('en'); %></h3></span>
     </div>
   </div>
 
   <div class="amount-section col-lg-12">
     <% amounts.forEach(function(amount){ %>
 
-        <div class="amount row">
+        <div class="amount expense-only-amount row">
+
+          <div data-state="<%= theme %>" class="amount-container expense-show-container col-1">
+            <button type="button" class="show-description-button" name="">+</button>
+          </div>
+
           <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-6">
             <div class="amount-date">
               <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
             </div>
           </div>
+
           <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-6">
             <div class="amount-amount">
               <span class="dollar">$</span><%= Number(parseFloat(amount.amount).toFixed(2)).toLocaleString('en'); %>
             </div>
           </div>
-          <div data-state="<%= theme %>" class="amount-container col-lg-7 col-md-7 col-12">
+
+          <div data-state="<%= theme %>" class="delete-expense-container col-1">
+            <form class="delete-item-form" action="/finances/<%= amount._id %>?_method=DELETE" method="post">
+              <button data-state="<%= theme %>" class="delete-item delete-expense" type="submit" name="button"><i class="far fa-trash-alt"></i></button>
+            </form>
+          </div>
+
+          <div data-state="<%= theme %>" class="amount-container expense-description-container col-md-8 col-12">
             <div class="amount-description">
               <%= amount.description.substr(0, 40); %>
             </div>
-          </div>
-          <div data-state="<%= theme %>" class="amount-button-container col-lg-1 col-md-1 col-1">
-            <form class="delete-item-form" action="/finances/<%= amount._id %>?_method=DELETE" method="post">
-              <button id="del" class="delete-item" type="submit" name="button"><i class="far fa-trash-alt"></i></button>
-            </form>
           </div>
 
         </div>
 
     <% }) %>
   </div>
-
-
-
-
 </section>

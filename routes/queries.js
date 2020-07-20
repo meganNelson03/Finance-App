@@ -1,18 +1,18 @@
-var express = require("express");
-var router = express.Router();
-var middleware = require("../middleware/index.js");
+var express = require("express"),
+    router = express.Router(),
+    middleware = require("../middleware/index.js");
 
 // REQUIREMENTS
-var Money = require("../models/money.js");
-var User = require("../models/user.js")
-var compute = require("../data.js");
-var constants = require("../constants.js");
+var Money     = require("../models/money.js"),
+    User      = require("../models/user.js"),
+    compute   = require("../data.js"),
+    constants = require("../constants.js");
 
 router.get("/", middleware.isLoggedIn, (req, res) => {
 
   if (constants.adjustingQuery.minDate || constants.adjustingQuery.maxDate || constants.adjustingQuery.type || constants.adjustingQuery.sortType) {
     // Adjusting current query
-    constants.currentQuery = compute.adjustCurrentQuery(constants.currentQuery, constants.dateInfo.minDate, constants.dateInfo.maxDate, constants.removeOptions, constants.adjustingQuery, constants.dateAdjusted, ["type", "date.day", "date.month", "date.year"]);
+    constants.currentQuery = compute.adjustCurrentQuery(constants.currentQuery, constants.dateInfo, constants.removeOptions, constants.adjustingQuery, constants.dateAdjusted, ["type", "date.day", "date.month", "date.year"]);
 
     if (constants.adjustingQuery.minDate || constants.adjustingQuery.maxDate) {
       constants.dateAdjusted = true;
@@ -32,7 +32,6 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
       constants.removeOptions = compute.setQueryToFalse(constants.removeOptions);
       constants.dateAdjusted = false;
 
-
       constants.sortOptions = compute.sortQueryResult(req.query.sortType);
       constants.currentSortOption = compute.getSortQueryString(req.query.sortType);
       constants.currentQuery = compute.createQueryObj(req.query, ["type", "date.day", "date.month", "date.year"]);
@@ -41,7 +40,8 @@ router.get("/", middleware.isLoggedIn, (req, res) => {
 
   User.find({"_id" : req.user._id}, (err, user) => {
     if (err) {
-      console.log(err);
+      req.flash("error", "Couldn't find user. Please try again.")
+      res.redirect("/login");
     }
 
     constants.currentQuery._id = user[0].moneyList;
@@ -68,7 +68,7 @@ router.get("/queries", (req, res) => {
 
   User.find({_id: req.user._id}, (err, user) => {
     if (err) {
-      console.log("Error: /queries user not found");
+      req.flash("error", "Sorry, we had an issue. Could you log in again?");
       res.redirect("/");
     }
 
@@ -76,7 +76,8 @@ router.get("/queries", (req, res) => {
 
     Money.find(constants.currentQuery, (err, moneys) => {
       if (err) {
-        console.log(err);
+        req.flash("error", "Could not identify your search. Please try again");
+        res.redirect("/finances");
       }
 
       constants.removeOptions.minDate = false;
@@ -92,7 +93,6 @@ router.get("/queries", (req, res) => {
       });
 
     }).sort({"date.day": 1, "date.month": 1, "date.year": 1});
-
 
   })
 

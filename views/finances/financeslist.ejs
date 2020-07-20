@@ -8,16 +8,19 @@
       <h3>Current Search: </h3>
     </div>
     <div class="index-button-container col-2">
-        <button data-toggle="open" data-state="<%= theme %>" type="button" class="close-forms close-current-search" name="button"><i class="fas fa-plus"></i></button>
+        <button data-state="<%= theme %>" type="button" class="close-forms close-current-search" name="button"><i class="fas fa-plus"></i></button>
     </div>
   </div>
 
   <div data-state="open" class="current-query-container">
 
     <div class="current-query-form">
-        <button type="button" class="remove-query-button btn btn-md btn-dark" name="removeItem" value="type">
-          Type: All
+      <form class="" action="/finances" method="get">
+        <button type="submit" class="remove-query-button btn btn-md btn-dark" name="removeItem" value="type">
+          <span>Type:</span> All
+          <span class="remove-query-icon">&times</span>
         </button>
+      </form>
     </div>
 
     <div class="current-query-form">
@@ -66,7 +69,7 @@
           <h3 class="amounts-header">Income </h3>
         </div>
         <div class="col-3">
-          <span data-state="<%= theme %>" class="income-total">$<%= Number(parseFloat(income).toFixed(2)).toLocaleString('en'); %></span>
+          <span data-state="<%= theme %>" class="income-total"><h3>$<%= Number(parseFloat(income).toFixed(2)).toLocaleString('en'); %></h3></span>
         </div>
       </div>
       <% amounts.forEach(function(amount){ %>
@@ -92,7 +95,7 @@
 
             <div data-state="<%= theme %>" class="amount-button-container col-1">
               <form class="delete-item-form" action="/finances/<%= amount._id %>?_method=DELETE" method="post">
-                <button class="" class="delete-item" type="submit" name="button"><i class="far fa-trash-alt"></i></button>
+                <button data-state="<%= theme %>" class="delete-item delete-amount" type="submit" name="button"><i class="far fa-trash-alt"></i></button>
               </form>
             </div>
 
@@ -114,7 +117,7 @@
           <h3 class="amounts-header">Expense</h3>
         </div>
         <div class="col-3">
-          <span data-state="<%= theme %>" class="expense-total">$<%= Number(parseFloat(expense).toFixed(2)).toLocaleString('en'); %></span>
+          <span data-state="<%= theme %>" class="expense-total"><h3>$<%= Number(parseFloat(expense).toFixed(2)).toLocaleString('en'); %></h3></span>
         </div>
       </div>
         <% amounts.forEach(function(amount){ %>
@@ -140,7 +143,7 @@
 
                 <div class="amount-button-container col-1">
                   <form class="delete-item-form" action="/finances/<%= amount._id %>?_method=DELETE" method="post">
-                    <button class="delete-item delete-item-button" type="submit" name="button"><i class="far fa-trash-alt"></i></button>
+                    <button data-state="<%= theme %>" class="delete-item delete-amount delete-item-button" type="submit" name="button"><i class="far fa-trash-alt"></i></button>
                   </form>
                 </div>
 
@@ -152,7 +155,6 @@
 
 
               </div>
-
 
           <% } %>
         <% }); %>

@@ -12,39 +12,11 @@ h1, h2, h3, h4, h5, h6 {
 
 /**** ALERT *****/
 
-
-.alert h1 {
-  padding-top: 2%;
-  font-size: 1.25rem;
-  display: inline-block;
-  position: relative;
-}
-
-.alert .exit-alert-button {
-  background-color: rgba(0, 0, 0, 0);
-  border: none;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  position: absolute;
-  top: 25%;
-  right: 50px;
-  width: 5%;
-}
-
-.alert .exit-alert-button:hover {
-  background-color: #add9b8;
-}
-
-.alert .exit-alert-button:focus {
-  outline: none;
-}
-
-.alert.alert-success {
+.alert {
   width: 60%;
   margin: 2% auto 0% auto;
   text-align: center;
 }
-
 
 /**** NAV ****/
 
@@ -228,6 +200,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 
 }
+
 
 @media (max-width: 1025px) and (max-height: 1367px) {
   /* iPad Pro */

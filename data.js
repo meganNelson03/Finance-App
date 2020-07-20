@@ -76,8 +76,7 @@ module.exports.addAmount = function(amounts, income, expense, callBack) {
 }
 
 module.exports.setQueryToFalse = function(query) {
-  console.log("query")
-  console.log(query);
+
   Object.getOwnPropertyNames(query).forEach((key) => {
     query[key] = false;
   });
@@ -89,7 +88,6 @@ module.exports.isAdjusting = function(query) {
 
   Object.getOwnPropertyNames(query).forEach((key) => {
     if (query[key]) {
-      console.log("YES, IS ADJUSTING");
       return true;
     }
   });
@@ -128,7 +126,7 @@ module.exports.createQueryObj = function(query, caseList) {
 
 }
 
-module.exports.adjustCurrentQuery = function(query, minDate, maxDate, removeOptions, adjustingQuery, dateAdjusted, caseList) {
+module.exports.adjustCurrentQuery = function(query, dateInfo, removeOptions, adjustingQuery, dateAdjusted, caseList) {
 
   var newQuery = {};
 
@@ -144,14 +142,14 @@ module.exports.adjustCurrentQuery = function(query, minDate, maxDate, removeOpti
 
   if (adjustingQuery.minDate && !(dateAdjusted)) {
 
-    newQuery[caseList[1]] = {$lte: maxDate.day};
-    newQuery[caseList[2]] = {$lte: maxDate.month};
-    newQuery[caseList[3]] = {$lte: maxDate.year};
+    newQuery[caseList[1]] = {$lte: dateInfo.maxDate.day};
+    newQuery[caseList[2]] = {$lte: dateInfo.maxDate.month};
+    newQuery[caseList[3]] = {$lte: dateInfo.maxDate.year};
 
   } else if (adjustingQuery.maxDate && !(dateAdjusted)) {
-    newQuery[caseList[1]] = {$gte: minDate.day};
-    newQuery[caseList[2]] = {$gte: minDate.month};
-    newQuery[caseList[3]] = {$gte: minDate.year};
+    newQuery[caseList[1]] = {$gte: dateInfo.minDate.day};
+    newQuery[caseList[2]] = {$gte: dateInfo.minDate.month};
+    newQuery[caseList[3]] = {$gte: dateInfo.minDate.year};
 
   } else if (dateAdjusted) {
 
@@ -167,7 +165,6 @@ module.exports.adjustCurrentQuery = function(query, minDate, maxDate, removeOpti
     removeOptions.sortType = true;
   }
 
-  console.log(newQuery);
   return newQuery;
 }
 

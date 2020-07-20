@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var express               = require("express"),
     bodyparser            = require("body-parser"),
     mongoose              = require("mongoose"),
@@ -34,13 +36,11 @@ mongoose.connect(constants.url, {
   }
 });
 
-
-
 //*** PASSPORT AUTH *****
 
 // PASSPORT CONFIG:
 app.use(require("express-session")({
-  secret: "Megan is the best coder alive",
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }));
@@ -49,28 +49,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new LocalStrategy(User.authenticate())); // .authenticate comes with passport-local-mongoose
-// passport.use(new LocalStrategy(
-//   function(username, password, done) {
-//       User.findOne({ username: username }, function (err, user) {
-//         console.log("USER:")
-//         console.log(user);
-//         if (err) {
-//           return done(err);
-//         }
-//         if (!user) {
-//           return done(null, false, {message: "Incorrect username, please try again."});
-//         }
-//         if (!user.validPassword(password)) {
-//           return done(null, false, {message: 'Incorrect password, please try again.' });
-//         }
-//         return done(null, user);
-//       });
-//     }
-// ));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-
 
 // middleware that runs for every single route
 app.use(function(req, res, next) {

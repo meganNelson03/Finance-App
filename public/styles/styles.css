@@ -1,5 +1,4 @@
 body {
-
   font-family: "Open Sans", sans-serif;
 }
 
@@ -11,11 +10,57 @@ h1, h2, h3, h4, h5, h6 {
   display: none;
 }
 
-/**** NAVBAR *******/
+/***** EXPENSE AND INCOME SHOW DESC STYLING ****/
 
-.navbar-light {
-
+.expense-description-container, .income-description-container {
+  display: block;
 }
+
+.expense-show-container, .income-show-container {
+  display: none;
+}
+
+.delete-expense-container, .delete-income-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  padding: 1px;
+  width: 35px;
+  height: 100%;
+}
+
+@media (max-width: 769px) {
+  .expense-show-container, .income-show-container {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+  }
+
+  div.amount-container.expense-show-container.col-1, div.amount-container.income-show-container.col-1 {
+    background-color: #389646;
+  }
+
+  .expense-show-container .show-description-button, .income-show-container .show-description-button {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #389646;
+  }
+
+  .expense-description-container, .income-description-container {
+    display: none;
+  }
+
+  .expense-only-amount .amount-description, .income-only-amount .amount-description {
+    display: none;
+  }
+}
+
+/**** NAVBAR *******/
 
 .change-theme-button {
   font-size: 2rem;
@@ -32,39 +77,6 @@ h1, h2, h3, h4, h5, h6 {
 .display-form:focus, #display-form:focus {
   outline: none;
 }
-
-/**** ALERT *****/
-
-
-.alert h1 {
-  padding-top: 2%;
-  font-size: 1.25rem;
-  display: inline-block;
-}
-
-.alert .exit-alert-button {
-  background-color: rgba(0, 0, 0, 0);
-  border: none;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  width: 5%;
-}
-
-.alert .exit-alert-button:hover {
-  background-color: #add9b8;
-}
-
-.alert .exit-alert-button:focus {
-  outline: none;
-}
-
-.alert.alert-success {
-  width: 60%;
-  margin: 2% auto 0% auto;
-  text-align: center;
-}
-
-
 
 /******FORM DISPLAY*****/
 
@@ -145,6 +157,10 @@ body[data-state="light"] {
   border-bottom: 1px solid #cadbe0;
 }
 
+.delete-item[data-state="light"] {
+  border: 1px solid #cadbe0;
+}
+
 ::placeholder[data-state="light"] {
   color: gray;
 }
@@ -210,46 +226,12 @@ body[data-state="dark"] {
   border-bottom: 1px solid #575656;
 }
 
+.delete-item[data-state="dark"] {
+  border: 1px solid #575656;
+}
+
 ::placeholder[data-state="dark"] {
   color: white;
-}
-
-/**** ALERT *******/
-
-.alert {
-  width: 50%;
-  margin: 2% auto 0 auto;
-  text-align: center;
-  position: relative;
-}
-
-.alert h1 {
-  padding-top: 2%;
-  font-size: 1rem;
-  display: inline-block;
-}
-
-.alert .exit-alert-button {
-  background-color: rgba(0, 0, 0, 0);
-  border: none;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  width: 5%;
-  position: absolute;
-  top: 25%;
-  right: 50px;
-}
-
-.alert .button-danger:hover {
-  background-color: #dea9ad;
-}
-
-.alert .button-success:hover {
-  background-color: #add9b8;
-}
-
-.alert .exit-alert-button:focus {
-  outline: none;
 }
 
 
@@ -307,6 +289,16 @@ body[data-state="dark"] {
 
 /**** INCOME & EXPENSE SECTION *****/
 
+.amount-section-header-row {
+  position: relative;
+}
+
+.amount-section-header-row .income-total, .amount-section-header-row .expense-total {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 .amount-income, .amount-expense {
   position: relative;
 }
@@ -327,10 +319,6 @@ body[data-state="dark"] {
 
 .amount-description-container[data-toggle="closed"] {
   display: none;
-}
-
-.amount-container {
-
 }
 
 .amount-description {
@@ -377,7 +365,6 @@ body[data-state="dark"] {
 }
 
 .delete-item-button {
-  border: 1px solid red;
   left: 50px;
 }
 
@@ -417,7 +404,6 @@ body[data-state="dark"] {
   padding-left: 5%;
 }
 
-
 .amount-container, .amount-button-container {
   height: 35px;
 }
@@ -426,7 +412,7 @@ body[data-state="dark"] {
   text-align: center;
 }
 
- .amount-date .amount-description {
+.amount-date .amount-description {
   border-right: 0;
 }
 
@@ -446,8 +432,6 @@ body[data-state="dark"] {
 .amount-section-header-row .col-3 {
   text-align: right;
 }
-
-
 
 .delete-item-form {
   position: absolute;
@@ -475,7 +459,6 @@ body[data-state="dark"] {
 .amount-button-container {
   width: 100%;
 }
-
 
 .amount-section-header-row div.col-12{
   padding: 0 0 0 .5%;
@@ -548,6 +531,17 @@ body[data-state="dark"] {
 
 /***** INCOME LIST SECTION ******/
 
+.income-header-row, .expense-header-row {
+  position: relative;
+}
+
+
+.income-header-row .income-total, .expense-header-row .expense-total {
+  position: absolute;
+  top: 0;
+  right: 2.5%;
+}
+
 .income-header-row {
   padding-left: 1%;
 }
@@ -558,6 +552,10 @@ body[data-state="dark"] {
 
 .income-header-row .col-3 {
   text-align: right;
+}
+
+.delete-income, .delete-expense {
+  width: 35px;
 }
 
 /***** EXPENSE LIST SECTION ******/
@@ -576,23 +574,38 @@ body[data-state="dark"] {
 
 /* animation */
 
-.amount:hover .delete-item-form button {
+.amount:hover .delete-amount {
   display: inline-block;
   animation: slide-out-animation 1s forwards;
+}
+
+.amount:hover .delete-item-form .delete-expense, .amount:hover .delete-item-form .delete-income {
+  display: inline-block;
+  animation: slide-out-anim 1s forwards;
 }
 
 @keyframes slide-out-animation {
 
   from {
-
-    transform: translateX(calc(-50%));
+    transform: translateX(calc(0%));
   }
 
   to {
     transform: translateX(calc(-100%));
   }
+}
 
 
+
+@keyframes slide-out-anim {
+
+  from {
+    transform: translateX(calc(50%));
+  }
+
+  to {
+    transform: translateX(calc(0));
+  }
 }
 
 /**** RESPONSIVE ******/
@@ -659,10 +672,6 @@ body[data-state="dark"] {
   .filter-amount, .add-amount {
     margin-right: 10%;
   }
-
-
-
-
 }
 
 @media (max-width: 768px) {
@@ -702,9 +711,6 @@ body[data-state="dark"] {
 }
 
 @media (max-width: 400px) {
-
-
-
 
   h2 {
     font-size: 1.75rem;

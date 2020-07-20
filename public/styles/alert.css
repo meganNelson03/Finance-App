@@ -1,0 +1,55 @@
+/*** ERROR/SUCCESS MESSAGE STYLING *****/
+
+.alert {
+  width: 50%;
+  margin: 2% auto 2% auto;
+  position: relative;
+  text-align: center;
+}
+
+.alert h1 {
+  padding-top: 2%;
+  font-size: 1.25rem;
+  display: inline-block;
+}
+
+.alert .exit-alert-button {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  width: 5%;
+  position: absolute;
+  top: 25%;
+  right: 50px;
+}
+
+.alert .button-danger:hover {
+  background-color: #dea9ad;
+}
+
+.alert .button-success:hover {
+  background-color: #add9b8;
+}
+
+.alert .exit-alert-button:focus {
+  outline: none;
+}
+
+@media (max-width: 991px) {
+  .alert h1 {
+    font-size: .5rem;
+  }
+
+  .alert {
+    width: 90%;
+  }
+
+  .alert .exit-alert-button {
+    right: 20px;
+  }
+
+  .alert .exit-alert-button:hover {
+    background-color: transparent;
+  }
+}

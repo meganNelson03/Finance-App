@@ -15,7 +15,9 @@
     <link href="https://fonts.googleapis.com/css2?family=ABeeZee&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
 
     <!-- my styles -->
+    <link rel="stylesheet" href="/styles/alert.css">
     <link rel="stylesheet" href="/styles/login.css">
+
 
   </head>
   <body>
@@ -25,14 +27,14 @@
       <!-- Success/error message for login/logout actions -->
       <div class="container">
           <% if (error && error.length>0) { %>
-              <div class="alert alert-danger" role="alert">
+              <div id="login-alert-error" class="alert alert-danger" role="alert">
                 <h1><%= error %></h1>
                 <button class="exit-alert-button" type="button" name="button">
                   &times;
                 </button>
               </div>
           <% } else if (success && success.length > 0) { %>
-              <div class="alert alert-success" role="alert">
+              <div id="login-alert-success" class="alert login-alert alert-success" role="alert">
                 <h1><%= success %></h1>
                 <button class="exit-alert-button" type="button" name="button">
                   &times;

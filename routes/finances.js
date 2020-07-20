@@ -1,12 +1,12 @@
-var express = require("express");
-var router = express.Router();
-var middleware = require("../middleware/index.js")
+var express = require("express"),
+    router = express.Router(),
+    middleware = require("../middleware/index.js")
 
 // REQUIREMENTS
-var Money = require("../models/money.js");
-var User = require("../models/user.js");
-var compute = require("../data.js");
-var constants = require("../constants.js");
+var Money     = require("../models/money.js"),
+    User      = require("../models/user.js"),
+    compute   = require("../data.js"),
+    constants = require("../constants.js");
 
 // GET ALL MONEY ENTRIES
 router.get("/", middleware.isLoggedIn, (req, res) => {

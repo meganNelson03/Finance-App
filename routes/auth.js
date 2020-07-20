@@ -1,12 +1,12 @@
-var express = require("express");
-var router = express.Router();
-var passport = require("passport");
-var flash = require("connect-flash");
-var User = require("../models/user.js");
-var constants = require("../constants.js");
+var express   = require("express"),
+    router    = express.Router(),
+    passport  = require("passport"),
+    flash     = require("connect-flash"),
+    User = require("../models/user.js"),
+    constants = require("../constants.js");
 
-router.get("/", function(req, res){
-   res.render("register", {error: ""});
+router.get("/", function(req, res) {
+   res.render("register");
 });
 
 router.get("/about", (req, res) => {
@@ -24,9 +24,7 @@ router.post("/register", (req, res) => {
       return res.render("register", {error: err.message});
     }
 
-    //log in user and redirect to finances
     passport.authenticate("local")(req, res, () => {
-      console.log("Successful Authentication");
       req.flash("success", "You've successfully signed up, " + user.username + "!");
       res.redirect("/finances");
     });
@@ -38,7 +36,7 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
-// handle login logic
+
 router.post("/login", passport.authenticate("local", {
   successRedirect: "/finances",
   failureRedirect: "/login",
