@@ -16,8 +16,9 @@ var User = require("./models/user.js");
 //******* Requirements ***************
 var constants = require(__dirname + "/constants.js");
 var financeRoute = require("./routes/finances.js");
-var queryRoute = require("./routes/queries.js")
+var amountRoute = require("./routes/amounts.js")
 var authRoute = require("./routes/auth.js");
+var queryRoute = require("./routes/queries.js")
 
 // ****** App Configuration *********
 app.use(express.static(__dirname + "/public"));
@@ -63,7 +64,8 @@ app.use(function(req, res, next) {
 //**** CONNECT ROUTES *******
 app.use("/", authRoute);
 app.use("/finances", financeRoute);
-app.use("/finances/amounts", queryRoute);
+app.use("/amounts", amountRoute);
+app.use("/queries", queryRoute)
 
 
 app.listen(constants.portNum, () => {

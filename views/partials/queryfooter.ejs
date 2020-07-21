@@ -1,11 +1,10 @@
 <% if (pages > 0) { %>
-
-  <div class="text-xs-center">
+  <div class="text-center">
     <ul data-state="<%= theme %>" class="pagination justify-content-center">
         <% if (current == 1) { %>
             <li class="disabled"><a>First</a></li>
         <% } else { %>
-            <li><a href="/finances/1">First</a></li>
+            <li><a href="/amounts/1">First</a></li>
         <% } %>
         <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
         <% if (i !== 1) { %>
@@ -15,7 +14,7 @@
             <% if (i == current) { %>
                 <li class="page-number active"><a><%= i %></a></li>
             <% } else { %>
-                <li class="page-number"><a href="/finances/<%= i %>"><%= i %></a></li>
+                <li class="page-number"><a href="/amounts/<%= i %>"><%= i %></a></li>
             <% } %>
             <% if (i == Number(current) + 4 && i < pages) { %>
                 <li class="disabled"><a>...</a></li>
@@ -24,11 +23,10 @@
         <% if (current == pages) { %>
             <li class="disabled"><a>Last</a></li>
         <% } else { %>
-            <li><a href="/finances/<%= pages %>">Last</a></li>
+            <li><a href="/amounts/<%= pages %>">Last</a></li>
         <% } %>
     </ul>
   </div>
-
 <% } %>
 
 

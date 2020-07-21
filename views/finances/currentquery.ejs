@@ -9,7 +9,7 @@
 
 <div data-toggle="open" class="current-query-container">
     <div class="current-query-form">
-      <form class="" action="/finances/amounts/queries/adjust" method="post">
+      <form class="" action="/queries/adjust" method="post">
         <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="type">
           <span>Type:</span> <span class="sort-type-text"><%= type %></span>
           <span class="remove-query-icon">&times</span>
@@ -18,7 +18,7 @@
     </div>
 
     <div class="current-query-form">
-      <form class="" action="/finances/amounts/queries/adjust" method="post">
+      <form class="" action="/queries/adjust" method="post">
           <% if (!sortAdjusted) { %>
               <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="sortType">
                 <span>Sort:</span> <%= sortType %>
@@ -29,7 +29,7 @@
     </div>
 
     <div class="current-query-form">
-      <form class="" action="/finances/amounts/queries/adjust" method="post">
+      <form class="" action="/queries/adjust" method="post">
         <% if (!minAdjusted) { %>
           <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="minDate">
                 From:  <%= minDate.month %>/<%= minDate.day %>/<%= minDate.year %>
@@ -40,7 +40,7 @@
     </div>
 
     <div class="current-query-form">
-      <form class="" action="/finances/amounts/queries/adjust" method="post">
+      <form class="" action="/queries/adjust" method="post">
         <% if (!maxAdjusted) { %>
           <button class="remove-query-button btn btn-md btn-dark" name="removeItem" type="submit" value="maxDate">
             To: <%= maxDate.month %>/<%= maxDate.day %>/<%= maxDate.year %>

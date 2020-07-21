@@ -9,7 +9,7 @@
       <h3>Expense</h3>
     </div>
     <div class="col-4">
-      <span data-state="dark" class="expense-total"><h3>$<%= Number(parseFloat(expense).toFixed(2)).toLocaleString('en'); %></h3></span>
+      <span data-state="dark" class="expense-total"><h3>$<%= Number(parseFloat(expenseTotal).toFixed(2)).toLocaleString('en'); %></h3></span>
     </div>
   </div>
 
@@ -23,7 +23,7 @@
           </div>
 
           <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-6">
-            <div class="amount-date">
+            <div data-state="<%= theme %>" class="amount-date">
               <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
             </div>
           </div>
@@ -35,7 +35,7 @@
           </div>
 
           <div data-state="<%= theme %>" class="delete-expense-container col-1">
-            <form class="delete-item-form" action="/finances/<%= amount._id %>?_method=DELETE" method="post">
+            <form class="delete-item-form" action="/<%= amount._id %>?_method=DELETE" method="post">
               <button data-state="<%= theme %>" class="delete-item delete-expense" type="submit" name="button"><i class="far fa-trash-alt"></i></button>
             </form>
           </div>

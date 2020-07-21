@@ -9,38 +9,78 @@ var Money     = require("../models/money.js"),
     constants = require("../constants.js");
 
 // GET ALL MONEY ENTRIES
-router.get("/", middleware.isLoggedIn, (req, res) => {
+router.get("/:page", middleware.isLoggedIn, (req, res) => {
+  var resultsPerPage = 10;
+  var currentPage = req.params.page || 1;
   constants.currentQuery = {};
   constants.currentSortOption = "";
   constants.adjustingQuery = compute.setQuery(constants.adjustingQuery, false);
+  constants.searchRetained = false;
+  var incomeTotal = 0, expenseTotal = 0;
+  var incomeList;
+  var expenseList;
+  var incomeCount, expenseCount;
 
   User.find({"_id" : req.user._id}, (err, user) => {
     if (err) {
       throw new Error("Error: User not found.");
     }
 
-    Money.find({"_id": user[0].moneyList}, (err, moneys) => {
-      if (err) {
-        throw new Error("Error: User's money list not found.");
-      }
+    // FIND ALL INCOME
+    Money.find({"_id": user[0].moneyList, type: "income"}, (err, incomes) => {
 
-      const date = compute.formattedDate();
+    })
+    .sort({"date.day": 1, "date.month": 1, "date.year": 1})
+    .skip((resultsPerPage * currentPage) - resultsPerPage)
+    .limit(resultsPerPage)
+    .exec((err, incomes) => {
+      Money.count().exec((err, count) => {
+        if (err) return next(err);
+        incomeCount = count;
+      });
+      incomeList = incomes;
+      incomeTotal = compute.addAmountOfType(incomes, "income");
+    })
 
-      compute.addAmount(moneys, 0, 0, (income, expense) => {
-        res.render("finances/finances", {amounts: moneys, theme: constants.currentTheme, date: date, income: income, expense: expense, all: true, type: "none"});
-      })
+    // FIND ALL EXPENSE
+    Money.find({"_id": user[0].moneyList, type: "expense"}, (err, expenses) => {
 
-    }).sort({"date.day": 1, "date.month": 1, "date.year": 1});
+    })
+    .sort({"date.day": 1, "date.month": 1, "date.year": 1})
+    .skip((resultsPerPage * currentPage) - resultsPerPage)
+    .limit(resultsPerPage)
+    .exec((err, expenses) => {
+      Money.count().exec((err, count) => {
+        if (err) return next(err);
+        expenseCount = count;
+        expenseCount >= incomeCount ? totalCount = expenseCount : totalCount = incomeCount;
+        console.log(totalCount);
+        expenseList = expenses;
+        expenseTotal = compute.addAmountOfType(expenses, "expense");
+        const date = compute.formattedDate();
 
-  })
-})
+        res.render("finances/finances",
+        {
+          current: currentPage, pages: Math.ceil((totalCount - 1) / resultsPerPage), incomes: incomeList, expenses: expenseList,
+          theme: constants.currentTheme, date: date, incomeTotal: incomeTotal, expenseTotal: expenseTotal, all: true,
+          type: "none"
+        });
+
+      });
+
+
+    })
+
+  });
+});
 
 router.post("/theme", middleware.isLoggedIn, (req, res) => {
   constants.currentTheme == "dark" ? constants.currentTheme = "light" : constants.currentTheme = "dark";
   res.redirect("back");
 })
 
-router.post("/", middleware.isLoggedIn, (req, res) => {
+router.post("/:page", middleware.isLoggedIn, (req, res) => {
+   var page = req.params.page || 1;
 
     var author = {
       id: req.user._id,
@@ -55,7 +95,8 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
       Money.create(newAmount, (err, newMoney) => {
         if (err) {
           req.flash("error", "Error: New entry could not be created, please try again.")
-          res.redirect("/finances");
+          res.redirect("/finances/1");
+          return;
         }
 
         User.findByIdAndUpdate({"_id" : req.user._id}, {$push: {moneyList: newMoney}}, (err, updatedUser) => {
@@ -68,36 +109,15 @@ router.post("/", middleware.isLoggedIn, (req, res) => {
     }
 
     if (JSON.stringify(constants.currentQuery) == "{}") {
-      res.redirect("/finances")
+      res.redirect("/finances/1")
     } else {
-      res.redirect("/finances/amounts/queries");
+      res.redirect("/queries");
     }
 
 });
 
 
 
-router.delete("/:itemID", middleware.isLoggedIn, (req, res) => {
-  Money.deleteOne({_id: req.params.itemID}, (err, deleted) => {
-    if (err) {
-      req.flash("error", "Error: Couldn't find entry to delete. Please try again.")
-      res.redirect("/finances");
-    }
 
-    User.findByIdAndUpdate({_id: req.user._id}, {$pull: {moneyList: req.params.itemID}}, (err, user) => {
-        if (err) {
-          req.flash("error", "Error: There was an issue deleting an entry from your finances list. Please try again.")
-          res.redirect("/finances");
-        }
-      });
-
-    if (JSON.stringify(constants.currentQuery) == "{}") {
-      res.redirect("/finances");
-    } else {
-      res.redirect("/finances/amounts/queries");
-    }
-
-  });
-})
 
 module.exports = router;

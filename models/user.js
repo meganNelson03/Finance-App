@@ -16,10 +16,6 @@ UserSchema.methods.validPassword = function( pwd ) {
     return ( this.password === pwd );
 };
 
-UserSchema.methods.getPassword = function () {
-	return this.password;
-}
-
 UserSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("User", UserSchema);

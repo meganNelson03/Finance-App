@@ -68,7 +68,7 @@ $(document).ready(function() {
   })
 
   $(".change-theme-button").on("click", () => {
-    toggleStates(["body", ".navbar-light", ".fa-money-bill-wave", ".change-theme-button", ".navbar-light .nav .nav-link", ".close-forms", ".income-total", ".expense-total", ".index-hr", ".delete-item", ".amount-container", ".form-section input", ".form-section select", "::placeholder"], "data-state", "dark", "light");
+    toggleStates(["body", ".navbar-light", ".fa-money-bill-wave", ".change-theme-button", ".navbar-light .nav .nav-link", ".close-forms", ".income-total", ".expense-total", ".index-hr", ".income-show-container", ".expense-show-container", ".delete-item", ".amount-container", ".form-section input", ".form-section select", ".pagination"], "data-state", "dark", "light");
     $(".change-theme-button").prop("innerHTML") == `<i class="fas fa-toggle-off" aria-hidden="true"></i>` ?
         $(".change-theme-button").html(`<i class='fas fa-toggle-on' aria-hidden="true"></i>`) :
         $(".change-theme-button").html(`<i class="fas fa-toggle-off" aria-hidden="true"></i>`);

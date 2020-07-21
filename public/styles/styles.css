@@ -157,6 +157,10 @@ body[data-state="light"] {
   border-bottom: 1px solid #cadbe0;
 }
 
+.income-show-container[data-state="light"], .expense-show-container[data-state="light"] {
+  border-right: 1px solid #cadbe0;
+}
+
 .delete-item[data-state="light"] {
   border: 1px solid #cadbe0;
 }
@@ -228,6 +232,10 @@ body[data-state="dark"] {
 
 .delete-item[data-state="dark"] {
   border: 1px solid #575656;
+}
+
+.income-show-container[data-state="dark"], .expense-show-container[data-state="dark"] {
+  border-right: 1px solid #575656;
 }
 
 ::placeholder[data-state="dark"] {
@@ -412,14 +420,6 @@ body[data-state="dark"] {
   text-align: center;
 }
 
-.amount-date .amount-description {
-  border-right: 0;
-}
-
-.amount-button-container {
-  position: relative;
-}
-
 .income-total, .expense-total {
   font-size: 1.5rem;
 }
@@ -572,6 +572,49 @@ body[data-state="dark"] {
   text-align: right;
 }
 
+/**** PAGINATION *****/
+
+.pagination li {
+  padding: .5%;
+}
+
+.pagination .page-number {
+  padding-left: 1%;
+  padding-right: 1%;
+}
+
+.pagination[data-state="dark"] li {
+  border-right: 1px solid gray;
+  background-color: #cee0e0;
+}
+
+.pagination[data-state="light"] li {
+  border: 1px solid #cadbe0;
+  background-color: white;
+}
+
+.pagination[data-state="light"] li:hover {
+  background-color: white;
+}
+
+.pagination[data-state="dark"] li:hover {
+  background-color: #b1e0e0;
+}
+
+.pagination[data-state="dark"] .disabled {
+  color: #404040;
+}
+
+.pagination[data-state="light"] .disabled {
+  color: #404040;
+}
+
+.active {
+  color: #404040;
+}
+
+
+
 /* animation */
 
 .amount:hover .delete-amount {
@@ -627,6 +670,10 @@ body[data-state="dark"] {
 
   .amount:hover .delete-item-form button {
     display: inline-block;
+    animation: none;
+  }
+
+  .amount:hover .delete-item-form .delete-expense, .amount:hover .delete-item-form .delete-income {
     animation: none;
   }
 
