@@ -1,3 +1,29 @@
+module.exports.adjustConstantsObj = function(query) {
+  query.currentQuery = module.exports.adjustCurrentQuery(query, ["type", "date.day", "date.month", "date.year"]);
+  query.dateAdjusted = module.exports.isAdjustingDate(query.adjustingQuery);
+  query.sortOptions = module.exports.getSortOptions(query);
+  query.adjustingQuery = module.exports.setQueryToFalse(query.adjustingQuery);
+  query.searchRetained = true;
+
+  return query;
+}
+
+module.exports.createSearchObj = function(query, request) {
+
+  query.dateInfo.minDate = module.exports.getDateString(request.query.minDate);
+  query.dateInfo.maxDate = module.exports.getDateString(request.query.maxDate);
+
+  query.removeOptions = module.exports.setQueryToFalse(query.removeOptions);
+  query.dateAdjusted = false;
+
+  query.sortOptions = module.exports.sortQueryResult(request.query.sortType);
+  query.currentSortOption = module.exports.getSortQueryString(request.query.sortType);
+  query.currentQuery = module.exports.createQueryObj(request.query, ["type", "date.day", "date.month", "date.year"]);
+  query.searchRetained = true;
+
+  return query;
+}
+
 module.exports.formattedDate = function() {
   var date = new Date();
   return date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + "-" + ('0' + date.getDate()).slice(-2);
@@ -119,7 +145,6 @@ module.exports.setQueryToFalse = function(query) {
 
 module.exports.isAdjusting = function(query) {
 
-  var bool;
   var values = Object.values(query);
 
   for (const value of values) {
@@ -128,7 +153,6 @@ module.exports.isAdjusting = function(query) {
     }
   }
 
-  console.log("DID THIS");
   return false;
 }
 
@@ -203,6 +227,24 @@ module.exports.adjustCurrentQuery = function(query, caseList) {
   }
 
   return newQuery;
+}
+
+module.exports.isAdjustingDate = function(query) {
+
+  if (query.minDate || query.maxDate) {
+    return true;
+  }
+
+  return false;
+
+}
+
+module.exports.getSortOptions = function(query) {
+  if (query.adjustingQuery.sortType) {
+    return {"date.day": 1, "date.month": 1, "date.year": 1};
+  } else {
+    return query.sortOptions;
+  }
 }
 
 module.exports.setQuery = function(query, value) {
