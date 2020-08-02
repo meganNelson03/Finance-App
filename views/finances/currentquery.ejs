@@ -32,7 +32,7 @@
       <form class="" action="/queries/adjust" method="post">
         <% if (!minAdjusted) { %>
           <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="minDate">
-                From:  <%= minDate.month %>/<%= minDate.day %>/<%= minDate.year %>
+                From:  <%= minDate.getMonth() + 1 %>/<%= minDate.getDate() + 1 %>/<%= minDate.getFullYear() %>
             <span class="remove-query-icon">&times</span>
           </button>
         <% } %>
@@ -43,7 +43,7 @@
       <form class="" action="/queries/adjust" method="post">
         <% if (!maxAdjusted) { %>
           <button class="remove-query-button btn btn-md btn-dark" name="removeItem" type="submit" value="maxDate">
-            To: <%= maxDate.month %>/<%= maxDate.day %>/<%= maxDate.year %>
+            To: <%= maxDate.getMonth() + 1 %>/<%= maxDate.getDate() + 1 %>/<%= maxDate.getFullYear() %>
             <span class="remove-query-icon">&times</span>
           </button>
         <% } %>

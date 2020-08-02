@@ -24,7 +24,7 @@
 
             <div data-state="<%= theme %>" class="amount-container col-lg-2 col-md-2 col-6">
               <div data-state="<%= theme %>" class="amount-date">
-                <%= amount.date.month %>/<%= amount.date.day %>/<%= amount.date.year %>
+                <%= amount.date.getMonth() + 1 %>/<%= amount.date.getDate() + 1 %>/<%= amount.date.getFullYear() %>
               </div>
             </div>
 

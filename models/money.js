@@ -3,11 +3,7 @@ var mongoose = require("mongoose");
 var moneySchema = new mongoose.Schema({
 	type: String,
   amount: Number,
-  date: {
-    day: Number,
-    month: Number,
-    year: Number
-  },
+  date: Date,
 	description: String,
 	author: {
 		id: {

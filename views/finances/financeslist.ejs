@@ -38,7 +38,7 @@
       <form class="" action="/queries/adjust" method="post">
         <% if (!minAdjusted) { %>
           <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="minDate">
-                From:  <%= minDate.month %>/<%= minDate.day %>/<%= minDate.year %>
+                From:  <%= minDate.getMonth() + 1 %>/<%= minDate.getDate() + 1 %>/<%= minDate.getFullYear() %>
             <span class="remove-query-icon">&times</span>
           </button>
         <% } %>
@@ -49,7 +49,7 @@
       <form class="" action="/queries/adjust" method="post">
         <% if (!maxAdjusted) { %>
           <button class="remove-query-button btn btn-md btn-dark" type="submit" name="removeItem" value="maxDate">
-                To:  <%= maxDate.month %>/<%= maxDate.day %>/<%= maxDate.year %>
+                To:  <%= maxDate.getMonth() + 1 %>/<%= maxDate.getDate() + 1 %>/<%= maxDate.getFullYear() %>
             <span class="remove-query-icon">&times</span>
           </button>
         <% } %>
@@ -82,7 +82,7 @@
 
             <div data-state="<%= theme %>" class="amount-container col-lg-4 col-4">
               <div class="amount-date">
-                <%= income.date.month %>/<%= income.date.day %>/<%= income.date.year %>
+                <%= income.date.getMonth() + 1 %>/<%= income.date.getDate() + 1 %>/<%= income.date.getFullYear() %>
               </div>
             </div>
 
@@ -128,7 +128,7 @@
 
                 <div data-state="<%= theme %>" class="amount-container col-4">
                   <div class="amount-date">
-                    <%= expense.date.month %>/<%= expense.date.day %>/<%= expense.date.year %>
+                    <%= expense.date.getMonth() + 1 %>/<%= expense.date.getDate() + 1 %>/<%= expense.date.getFullYear() %>
                   </div>
                 </div>
 

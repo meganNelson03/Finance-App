@@ -1,5 +1,5 @@
 module.exports.adjustConstantsObj = function(query) {
-  query.currentQuery = module.exports.adjustCurrentQuery(query, ["type", "date.day", "date.month", "date.year"]);
+  query.currentQuery = module.exports.adjustCurrentQuery(query, ["type", "date"]);
   query.dateAdjusted = module.exports.isAdjustingDate(query.adjustingQuery);
   query.sortOptions = module.exports.getSortOptions(query);
   query.adjustingQuery = module.exports.setQueryToFalse(query.adjustingQuery);
@@ -20,6 +20,9 @@ module.exports.createSearchObj = function(query, request) {
   query.currentSortOption = module.exports.getSortQueryString(request.query.sortType);
   query.currentQuery = module.exports.createQueryObj(request.query, ["type", "date.day", "date.month", "date.year"]);
   query.searchRetained = true;
+
+  console.log("QUERY:")
+  console.log(query);
 
   return query;
 }
@@ -53,18 +56,21 @@ module.exports.formattedDate = function() {
 }
 
 module.exports.getDateString = function getDateString(query) {
-  const dateInfo = {
+  const date = {
     day: query.substr(8, 2),
     month: query.substr(5, 2),
     year: query.substr(0, 4)
   }
 
-  return dateInfo;
+  return new Date(`${date.year}-${date.month}-${date.day}:00:00.000Z`);
+
 }
 
 module.exports.getAmountDetails = function(query, queryDate, queryType, queryAmount, queryDescription, author) {
 
-  const dateInfo = getDateString(queryDate);
+  const dateInfo = module.exports.getDateString(queryDate);
+
+  console.log(queryDate);
 
   const details = {
     type: queryType,
@@ -74,6 +80,9 @@ module.exports.getAmountDetails = function(query, queryDate, queryType, queryAmo
     author: author
   }
 
+  console.log("NEW AMOUNT DETAILS");
+  console.log(details);
+
   return details;
 
 }
@@ -81,9 +90,9 @@ module.exports.getAmountDetails = function(query, queryDate, queryType, queryAmo
 module.exports.sortQueryResult = function(type) {
 
   if (type == "dateDescending") {
-    return {"date.day": -1, "date.month": -1, "date.year": -1};
+    return {date: -1};
   } else if (type == "dateAscending") {
-    return {"date.day": 1, "date.month": 1, "date.year": 1};
+    return {date: 1};
   } else if (type == "amountDescending") {
     return {amount: -1};
   } else if (type == "amountAscending") {
@@ -97,11 +106,11 @@ module.exports.getSortQueryString = function(type) {
   if (type == "dateDescending") {
     return "Date Descending";
   } else if (type == "dateAscending") {
-    return"Date Ascending";
+    return "Date Ascending";
   } else if (type == "amountDescending") {
     return "Highest Amount";
   } else if (type == "amountAscending") {
-    return"Lowest Amount";
+    return "Lowest Amount";
   }
 
 }
@@ -182,6 +191,8 @@ module.exports.isAdjusting = function(query) {
 module.exports.createQueryObj = function(query, caseList) {
 
   var newQuery = {};
+  console.log("CREATE QUERY OBJ")
+  console.log(query);
   var minDay, maxDay, minMonth, maxMonth, minYear, maxYear;
 
   query = removeQueryValue(query, "none");
@@ -202,9 +213,14 @@ module.exports.createQueryObj = function(query, caseList) {
     }
   })
 
-  newQuery["date.day"] = {$gte: minDay, $lte: maxDay};
-  newQuery["date.month"] = {$gte: minMonth, $lte: maxMonth};
-  newQuery["date.year"] = {$gte: minYear, $lte: maxYear};
+
+  var dateOne = new Date(`${minMonth} ${minDay} ${minYear}`);
+  var dateTwo = new Date(`${maxMonth} ${maxDay} ${maxYear}`);
+
+  newQuery["date"] = {$gte: dateOne, $lte: dateTwo}
+  console.log("NEW QUERY:")
+  console.log(newQuery);
+  console.log(dateOne, dateTwo);
 
   return newQuery;
 
@@ -213,6 +229,9 @@ module.exports.createQueryObj = function(query, caseList) {
 module.exports.adjustCurrentQuery = function(query, caseList) {
 
   var newQuery = {};
+  console.log("ADJUST CURR QU: query")
+  console.log(query)
+  console.log(caseList);
 
   Object.getOwnPropertyNames(query.currentQuery).forEach(key => {
     if (key != caseList[0]) {
@@ -226,21 +245,16 @@ module.exports.adjustCurrentQuery = function(query, caseList) {
 
   if (query.adjustingQuery.minDate && !(query.dateAdjusted)) {
 
-    newQuery[caseList[1]] = {$lte: query.dateInfo.maxDate.day};
-    newQuery[caseList[2]] = {$lte: query.dateInfo.maxDate.month};
-    newQuery[caseList[3]] = {$lte: query.dateInfo.maxDate.year};
+    newQuery[caseList[1]] = {$lte: query.dateInfo.maxDate}
 
   } else if (query.adjustingQuery.maxDate && !(query.dateAdjusted)) {
-    newQuery[caseList[1]] = {$gte: query.dateInfo.minDate.day};
-    newQuery[caseList[2]] = {$gte: query.dateInfo.minDate.month};
-    newQuery[caseList[3]] = {$gte: query.dateInfo.minDate.year};
+
+    newQuery[caseList[1]] = {$gte: query.dateInfo.minDate};
 
   } else if (query.dateAdjusted) {
 
     if (query.removeOptions.minDate || query.removeOptions.maxDate) {
       newQuery[caseList[1]] = {$gte: 0};
-      newQuery[caseList[2]] = {$gte: 0};
-      newQuery[caseList[3]] = {$gte: 0};
     }
 
   }
@@ -248,6 +262,9 @@ module.exports.adjustCurrentQuery = function(query, caseList) {
   if (query.adjustingQuery.sortType) {
     query.removeOptions.sortType = true;
   }
+
+  console.log("ADJUST CURR QUERY:")
+  console.log(newQuery)
 
   return newQuery;
 }
@@ -292,12 +309,12 @@ function removeQueryValue(query, value) {
   return newQuery;
 }
 
-function getDateString(query) {
-  const dateInfo = {
-    day: query.substr(8, 2),
-    month: query.substr(5, 2),
-    year: query.substr(0, 4)
-  }
-
-  return dateInfo;
-}
+// function getDateString(query) {
+//   const dateInfo = {
+//     day: query.substr(8, 2),
+//     month: query.substr(5, 2),
+//     year: query.substr(0, 4)
+//   }
+//
+//   return dateInfo;
+// }

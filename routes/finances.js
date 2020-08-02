@@ -46,6 +46,7 @@ router.get("/:page", middleware.isLoggedIn, (req, res) => {
         res.redirect("/login");
         return;
       }
+
     })
     .sort({"date.day": 1, "date.month": 1, "date.year": 1})
     .skip((resultsPerPage * currentPage) - resultsPerPage)
@@ -65,21 +66,25 @@ router.get("/:page", middleware.isLoggedIn, (req, res) => {
         res.redirect("/login");
         return;
       }
+
+
     })
     .sort({"date.day": 1, "date.month": 1, "date.year": 1})
     .skip((resultsPerPage * currentPage) - resultsPerPage)
     .limit(resultsPerPage)
     .exec((err, expenses) => {
-      Money.count().exec((err, count) => {
+
+      Money.count({"_id": user[0].moneyList}).exec((err, count) => {
         if (err) return next(err);
         var totalCount;
+
         count >= incomeCount ? totalCount = count : totalCount = incomeCount;
-        expenseList = expenses;
         const date = compute.formattedDate();
+
         res.render("finances/finances",
         {
           current: currentPage, pages: Math.ceil((totalCount / resultsPerPage)), incomes: incomeList,
-          expenses: expenseList, theme: constants.currentTheme, date: date, incomeTotal: incomeTotal,
+          expenses: expenses, theme: constants.currentTheme, date: date, incomeTotal: incomeTotal,
           expenseTotal: expenseTotal, all: true, type: "none"
         });
       });
