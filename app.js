@@ -12,6 +12,7 @@ var express               = require("express"),
     app = express();
 
 var User = require("./models/user.js");
+const PORT = process.env.PORT || 8087;
 
 //******* Requirements ***************
 var constants = require(__dirname + "/constants.js");
@@ -73,6 +74,6 @@ app.use("*", (req, res) => {
 })
 
 
-app.listen(constants.portNum, () => {
+app.listen(PORT, () => {
   console.log(`Listening at ${constants.portNum}...`);
 })
