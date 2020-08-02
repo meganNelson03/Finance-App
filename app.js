@@ -12,7 +12,7 @@ var express               = require("express"),
     app = express();
 
 var User = require("./models/user.js");
-const PORT = process.env.PORT || 8087;
+const PORT = process.env.PORT || 3007;
 
 //******* Requirements ***************
 var constants = require(__dirname + "/constants.js");

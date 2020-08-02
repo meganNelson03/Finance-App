@@ -6,6 +6,12 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "AbeeZee";
 }
 
+.date-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+
 .show-form {
   display: none;
 }
@@ -382,6 +388,8 @@ body[data-state="dark"] {
 
 /***************************/
 
+
+
 .amount-section {
   padding-left: 2%;
 }
@@ -615,6 +623,8 @@ body[data-state="dark"] {
 
 
 
+
+
 /* animation */
 
 .amount:hover .delete-amount {
@@ -719,6 +729,10 @@ body[data-state="dark"] {
   .filter-amount, .add-amount {
     margin-right: 10%;
   }
+
+  .close-add-filter, .close-current-search {
+    padding-right: 50px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -759,12 +773,23 @@ body[data-state="dark"] {
 
 @media (max-width: 400px) {
 
+  .delete-item-form {
+    left: 4px;
+  }
+}
+
+@media (max-width: 400px) {
+
   h2 {
     font-size: 1.75rem;
   }
 
   h3 {
     font-size: 1.25rem;
+  }
+
+  .nav-list-container {
+    margin-right: 20%;
   }
 
 }
