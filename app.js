@@ -4,7 +4,7 @@ var express               = require("express"),
     bodyparser            = require("body-parser"),
     mongoose              = require("mongoose"),
     methodOverride        = require("method-override"),
-    mongo                 = require("mongodb").MongoClient,
+    MongoClient           = require("mongodb").MongoClient,
     flash                 = require("connect-flash");
     passport              = require("passport"),
     LocalStrategy         = require("passport-local"),
@@ -27,7 +27,7 @@ app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
 app.use(flash());
 
-mongoose.connect(constants.url, {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   }, (err, client) => {
@@ -65,7 +65,12 @@ app.use(function(req, res, next) {
 app.use("/", authRoute);
 app.use("/finances", financeRoute);
 app.use("/amounts", amountRoute);
-app.use("/queries", queryRoute)
+app.use("/queries", queryRoute);
+app.use("*", (req, res) => {
+  res.status(400);
+  req.flash("Error: Resource not found.")
+  res.render("error");
+})
 
 
 app.listen(constants.portNum, () => {

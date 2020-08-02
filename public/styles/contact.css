@@ -59,6 +59,11 @@ form textarea {
   height: 150px;
 }
 
+.message {
+  margin-top: 10px;
+  text-align: center;
+}
+
 @media (max-width: 991px) {
   .container-fluid {
     padding: 10% 5%;

@@ -8,27 +8,44 @@ var Money     = require("../models/money.js"),
     compute   = require("../data.js"),
     constants = require("../constants.js");
 
+
+router.get("/", middleware.isLoggedIn, (req, res) => {
+  res.redirect("/finances/1");
+})
+
 // GET ALL MONEY ENTRIES
 router.get("/:page", middleware.isLoggedIn, (req, res) => {
   var resultsPerPage = 10;
   var currentPage = req.params.page || 1;
-  constants.currentQuery = {};
-  constants.currentSortOption = "";
-  constants.adjustingQuery = compute.setQuery(constants.adjustingQuery, false);
-  constants.searchRetained = false;
+  constants = compute.resetQuery(constants);
   var incomeTotal = 0, expenseTotal = 0;
-  var incomeList;
-  var expenseList;
-  var incomeCount, expenseCount;
+  var incomeList, expenseList, incomeCount, expenseCount;
+
 
   User.find({"_id" : req.user._id}, (err, user) => {
     if (err) {
       throw new Error("Error: User not found.");
     }
 
+    // populate income and expense fields
+    Money.find({"_id": user[0].moneyList}, (err, moneys) => {
+      if (err) {
+        req.flash("error", "Couldn't find user's finances list. Please login again.")
+        res.redirect("/login");
+      }
+
+      incomeTotal = compute.addAmountOfType(moneys, "income");
+      expenseTotal = compute.addAmountOfType(moneys, "expense");
+
+    });
+
     // FIND ALL INCOME
     Money.find({"_id": user[0].moneyList, type: "income"}, (err, incomes) => {
-
+      if (err) {
+        req.flash("error", "Couldn't find user's finances list. Please try again.");
+        res.redirect("/login");
+        return;
+      }
     })
     .sort({"date.day": 1, "date.month": 1, "date.year": 1})
     .skip((resultsPerPage * currentPage) - resultsPerPage)
@@ -39,12 +56,15 @@ router.get("/:page", middleware.isLoggedIn, (req, res) => {
         incomeCount = count;
       });
       incomeList = incomes;
-      incomeTotal = compute.addAmountOfType(incomes, "income");
     })
 
     // FIND ALL EXPENSE
     Money.find({"_id": user[0].moneyList, type: "expense"}, (err, expenses) => {
-
+      if (err) {
+        req.flash("error", "Couldn't find user's finances list. Please try again.");
+        res.redirect("/login");
+        return;
+      }
     })
     .sort({"date.day": 1, "date.month": 1, "date.year": 1})
     .skip((resultsPerPage * currentPage) - resultsPerPage)
@@ -52,20 +72,16 @@ router.get("/:page", middleware.isLoggedIn, (req, res) => {
     .exec((err, expenses) => {
       Money.count().exec((err, count) => {
         if (err) return next(err);
-        expenseCount = count;
-        expenseCount >= incomeCount ? totalCount = expenseCount : totalCount = incomeCount;
-        console.log(totalCount);
+        var totalCount;
+        count >= incomeCount ? totalCount = count : totalCount = incomeCount;
         expenseList = expenses;
-        expenseTotal = compute.addAmountOfType(expenses, "expense");
         const date = compute.formattedDate();
-
         res.render("finances/finances",
         {
-          current: currentPage, pages: Math.ceil((totalCount - 1) / resultsPerPage), incomes: incomeList, expenses: expenseList,
-          theme: constants.currentTheme, date: date, incomeTotal: incomeTotal, expenseTotal: expenseTotal, all: true,
-          type: "none"
+          current: currentPage, pages: Math.ceil((totalCount / resultsPerPage)), incomes: incomeList,
+          expenses: expenseList, theme: constants.currentTheme, date: date, incomeTotal: incomeTotal,
+          expenseTotal: expenseTotal, all: true, type: "none"
         });
-
       });
 
 
@@ -115,9 +131,6 @@ router.post("/:page", middleware.isLoggedIn, (req, res) => {
     }
 
 });
-
-
-
 
 
 module.exports = router;

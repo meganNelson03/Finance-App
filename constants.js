@@ -5,7 +5,7 @@ module.exports =
   searchRetained: false,
   currentQuery : {},
   currentSortOption : "",
-  currentTheme : "dark",
+  currentTheme : "light",
   sortOptions: {},
   dateInfo: {
     minDate: {},

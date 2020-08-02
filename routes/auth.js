@@ -3,6 +3,7 @@ var express   = require("express"),
     passport  = require("passport"),
     middleware = require("../middleware/index.js");
     flash     = require("connect-flash"),
+    nodemailer = require("nodemailer");
     User = require("../models/user.js"),
     Money = require("../models/money.js"),
     constants = require("../constants.js");
@@ -16,8 +17,38 @@ router.get("/about", (req, res) => {
 });
 
 router.get("/contact", (req, res) => {
-  res.render("contact");
+  res.render("contact", {message: ""});
 });
+
+router.post("/contact", (req, res) => {
+
+  var transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.EMAIL_CLIENT,
+      pass: process.env.EMAIL_PASSWORD
+    }
+  });
+
+  var mailOptions = {
+    from: req.body.email,
+    to: process.env.EMAIL_CLIENT,
+    subject: "Email from Finance App",
+    text: "Name: " + req.body.name + "\n" + "Email: " + req.body.email + "\n\n" + req.body.message
+  }
+
+  transporter.sendMail(mailOptions, function(error, info) {
+    if (error) {
+      console.log(error);
+      res.render("contact", {message: "Something went wrong, please try again."});
+    } else {
+      res.render("contact", {message: "Thanks for reaching out!"});
+    }
+  });
+
+
+
+})
 
 router.post("/register", (req, res) => {
 

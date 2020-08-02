@@ -24,6 +24,29 @@ module.exports.createSearchObj = function(query, request) {
   return query;
 }
 
+module.exports.populateFields = function(query, Object) {
+
+  Object.find(query, (err, cursor) => {
+    if (err) {
+
+    }
+  })
+
+
+}
+
+
+
+module.exports.resetQuery = function(query) {
+
+  query.currentQuery = {};
+  query.currentSortOption = "";
+  query.adjustingQuery = module.exports.setQuery(query.adjustingQuery, false);
+  query.searchRetained = false;
+
+  return query;
+}
+
 module.exports.formattedDate = function() {
   var date = new Date();
   return date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + "-" + ('0' + date.getDate()).slice(-2);

@@ -99,21 +99,18 @@ router.get("/:page", middleware.isLoggedIn, (req, res) => {
     .exec(function(err, expenses) {
       Money.count().exec((err, count) => {
         if (err) return next(err);
-        expenseCount = count;
-        var items = expenseCount >= incomeCount ? expenseCount : incomeCount;
+        var total;
+        count >= incomeCount ? total = count : total = incomeCount;
         const date = compute.formattedDate();
         expenseTotal = compute.addAmountOfType(expenses);
-        res.render("finances/finances", {current: currentPage, pages: Math.ceil(items / constants.resultsPerPage),
+        res.render("finances/finances", {current: currentPage, pages: Math.ceil(total / constants.resultsPerPage),
           incomes: incomeList, expenses: expenseList, minDate: constants.dateInfo.minDate, maxDate: constants.dateInfo.maxDate,
           minAdjusted: constants.removeOptions.minDate, maxAdjusted: constants.removeOptions.maxDate,
           sortAdjusted: constants.removeOptions.sortType, sortType: constants.currentSortOption,
           date: date, incomeTotal: incomeTotal, expenseTotal: expenseTotal, theme: constants.currentTheme, all: false, type: constants.currentQuery.type});
-      })
-
-    })
-
+      });
+    });
   });
-
 });
 
 router.get("/incomes/:page", (req, res) => {
@@ -193,8 +190,5 @@ router.get("/expenses/:page", (req, res) => {
       });
     });
 });
-
-
-
 
 module.exports = router;
