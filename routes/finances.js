@@ -52,7 +52,7 @@ router.get("/:page", middleware.isLoggedIn, (req, res) => {
     .skip((resultsPerPage * currentPage) - resultsPerPage)
     .limit(resultsPerPage)
     .exec((err, incomes) => {
-      Money.count().exec((err, count) => {
+      Money.find({"_id": user[0].moneyList}).count().exec((err, count) => {
         if (err) return next(err);
         incomeCount = count;
       });
@@ -74,16 +74,15 @@ router.get("/:page", middleware.isLoggedIn, (req, res) => {
     .limit(resultsPerPage)
     .exec((err, expenses) => {
 
-      Money.count({"_id": user[0].moneyList}).exec((err, count) => {
+      Money.find({"_id": user[0].moneyList}).count().exec((err, count) => {
         if (err) return next(err);
-        var totalCount;
-
-        count >= incomeCount ? totalCount = count : totalCount = incomeCount;
         const date = compute.formattedDate();
+        var total;
+        count > incomeCount ? total = count : total = incomeCount;
 
         res.render("finances/finances",
         {
-          current: currentPage, pages: Math.ceil((totalCount / resultsPerPage)), incomes: incomeList,
+          current: currentPage, pages: Math.ceil((total / resultsPerPage)), incomes: incomeList,
           expenses: expenses, theme: constants.currentTheme, date: date, incomeTotal: incomeTotal,
           expenseTotal: expenseTotal, all: true, type: "none"
         });

@@ -21,9 +21,6 @@ module.exports.createSearchObj = function(query, request) {
   query.currentQuery = module.exports.createQueryObj(request.query, ["type", "date.day", "date.month", "date.year"]);
   query.searchRetained = true;
 
-  console.log("QUERY:")
-  console.log(query);
-
   return query;
 }
 
@@ -70,7 +67,6 @@ module.exports.getAmountDetails = function(query, queryDate, queryType, queryAmo
 
   const dateInfo = module.exports.getDateString(queryDate);
 
-  console.log(queryDate);
 
   const details = {
     type: queryType,
@@ -80,8 +76,6 @@ module.exports.getAmountDetails = function(query, queryDate, queryType, queryAmo
     author: author
   }
 
-  console.log("NEW AMOUNT DETAILS");
-  console.log(details);
 
   return details;
 
@@ -191,8 +185,6 @@ module.exports.isAdjusting = function(query) {
 module.exports.createQueryObj = function(query, caseList) {
 
   var newQuery = {};
-  console.log("CREATE QUERY OBJ")
-  console.log(query);
   var minDay, maxDay, minMonth, maxMonth, minYear, maxYear;
 
   query = removeQueryValue(query, "none");
@@ -218,9 +210,6 @@ module.exports.createQueryObj = function(query, caseList) {
   var dateTwo = new Date(`${maxMonth} ${maxDay} ${maxYear}`);
 
   newQuery["date"] = {$gte: dateOne, $lte: dateTwo}
-  console.log("NEW QUERY:")
-  console.log(newQuery);
-  console.log(dateOne, dateTwo);
 
   return newQuery;
 
@@ -229,9 +218,6 @@ module.exports.createQueryObj = function(query, caseList) {
 module.exports.adjustCurrentQuery = function(query, caseList) {
 
   var newQuery = {};
-  console.log("ADJUST CURR QU: query")
-  console.log(query)
-  console.log(caseList);
 
   Object.getOwnPropertyNames(query.currentQuery).forEach(key => {
     if (key != caseList[0]) {
@@ -262,9 +248,6 @@ module.exports.adjustCurrentQuery = function(query, caseList) {
   if (query.adjustingQuery.sortType) {
     query.removeOptions.sortType = true;
   }
-
-  console.log("ADJUST CURR QUERY:")
-  console.log(newQuery)
 
   return newQuery;
 }
